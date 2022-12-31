@@ -32,6 +32,13 @@ form div {
     padding-top: 20px;
 }
 
-button {
-    margin: 0;
+@media all and (max-width: 850px) {
+    .btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    .links button {
+        margin: 10px;
+        font-size: 90%;
+    }
 }

@@ -25,7 +25,7 @@ export default function LogIn() {
                     <input type='password' placeholder='password' />
                 </div>
 
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Link to={'/menu'} className='links'>
                         <Button variant='primary'>Log In!</Button>
                     </Link>

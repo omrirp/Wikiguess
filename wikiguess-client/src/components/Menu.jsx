@@ -24,23 +24,24 @@ export default function Menu() {
                     maxWidth: 500,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'column',
+
                     margin: 'auto',
                 }}
+                className='links btns'
             >
-                <Link className='links'>
+                <Link to='/game'>
                     <Button variant='primary'>Play!</Button>
                 </Link>
-                <Link className='links'>
+                <Link>
                     <Button variant='primary'>Statistics</Button>
                 </Link>
-                <Link className='links'>
+                <Link>
                     <Button variant='primary'>Sahe</Button>
                 </Link>
-                <Link to={'/'} style={{ fontSize: 25 }}>
-                    log out
-                </Link>
             </div>
+            <Link to={'/'} style={{ fontSize: 25 }}>
+                log out
+            </Link>
         </div>
     );
 }

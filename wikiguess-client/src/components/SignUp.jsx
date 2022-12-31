@@ -34,7 +34,7 @@ export default function signUp() {
                     <input type='password' placeholder='Confirn password' />
                 </div>
 
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Link to={'/menu'} className='links'>
                         <Button variant='primary'>Sign Up!</Button>
                     </Link>
