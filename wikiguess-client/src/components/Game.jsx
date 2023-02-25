@@ -88,7 +88,7 @@ export default function Game() {
         let [minKey, minVal] = findMin(entropyArr);
         let toAsk = decision(data, minKey);
 
-        setQuestion('is you charectar ' + minKey + ' is ' + toAsk + '?');
+        setQuestion('Is you charectar ' + minKey + ' is ' + toAsk + '?');
     }, [data]);
 
     return (
