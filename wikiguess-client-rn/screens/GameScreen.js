@@ -26,21 +26,23 @@ export default function GameScreen() {
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
-        keys = keys.filter((key) => key !== 'name');
+        keys = keys.filter((key) => key != 'name');
 
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
             for (let i = 0; i < data.length; i++) {
                 if (!probabilities[data[i][key]] && data[i][key]) {
-                    let probability = data.filter((o) => o[key] === data[i][key]).length / data.length;
+                    let probability = data.filter((o) => o[key] == data[i][key]).length / data.length;
                     probabilities[data[i][key]] = { probability, key };
                 }
             }
         });
         // Result for probabilities- {unique valeu: probability, ...}
-        console.log('probabilities:');
-        console.log(probabilities);
+        //console.log('probabilities:');
+        //console.log(probabilities);
+        //console.log('data:');
+        //console.log(data);
 
         // Find the unique value that will be closest to cut the data to 50%
         // meaning |probability(value)-0.5| will give the minimum result
@@ -59,42 +61,41 @@ export default function GameScreen() {
     }
 
     function yesPressHandler() {
-        let filteredData = data.filter((item) => item[key] === value);
-        setData(filteredData);
-        console.log('filteredData:');
-        console.log(filteredData);
+        //let filteredData = data.filter((item) => item[key] === value);
+        setData((prevData) => prevData.filter((item) => item[key] == value));
         setQuestionNum((prev) => prev + 1);
+        setLastAnswer('yes');
     }
 
     function noPressHandler() {
-        let filteredData = data.filter((item) => item[key] !== value);
-        console.log('filteredData:');
-        console.log(filteredData);
-        setData(filteredData);
+        //let filteredData = data.filter((item) => item[key] !== value);
+        setData((prevData) => prevData.filter((item) => item[key] != value));
         setQuestionNum((prev) => prev + 1);
+        setLastAnswer('no');
     }
 
     function dontKnowPressHandler() {
-        let filteredData = data;
-
-        for (let i = 0; i < filteredData.length; i++) {
-            if (filteredData[i][key] === value) {
-                filteredData[i][key] = null;
+        setData((prevData) => {
+            for (let i = 0; i < prevData.length; i++) {
+                if (prevData[i][key] == value) {
+                    prevData[i][key] = null;
+                }
             }
-        }
-        console.log('filteredData:');
-        console.log(filteredData);
-        setData(filteredData);
+            return prevData;
+        });
         setQuestionNum((prev) => prev + 1);
+        setLastAnswer("don't know");
     }
 
     useEffect(() => {
         //let entropyObj = calculateEntropy(data);
         let [decidedKey, decidedValue] = decision();
+        //let askobj = { key: decidedKey, value: decidedValue };
+        //console.log('ask:', askobj);
         setKey(decidedKey);
         setValue(decidedValue);
         setQuestion('is you charectar ' + key + ' is ' + value + '?');
-    }, [data, key, value]);
+    }, [data, key, value, questionNum]);
 
     return (
         <View style={styles.rootContainer}>
