@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         width: '80%',
         marginVertical: 20,
-        borderWidth: 1,
+        //borderWidth: 1,
         marginTop: 50,
     },
     buttonContainer: {
