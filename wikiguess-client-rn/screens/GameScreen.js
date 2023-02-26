@@ -8,15 +8,17 @@ const dataJason = [
     { name: 'avi', age: 28, grade: 90, gender: 'male' },
     { name: 'dani', age: 25, grade: 90, gender: 'male' },
     { name: 'benny', age: 27, grade: 87, gender: 'male' },
-    { name: 'shmulik', age: 26, grade: 85, gender: 'male' },
+    { name: 'shmulik', age: 26, grade: 74, gender: 'male' },
     { name: 'rivka', age: 25, grade: 70, gender: 'female' },
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
 export default function GameScreen() {
     const [questionNum, setQuestionNum] = useState(1);
-    const [question, setQuestion] = useState('is your Charectes gender is male?');
+    const [question, setQuestion] = useState('');
     const [data, setData] = useState(dataJason);
+    const [key, setKey] = useState(null);
+    const [value, setValue] = useState(null);
     const [lastAnswer, setLastAnswer] = useState('yes');
 
     // Decide what unique value to use for renderind the question
@@ -24,19 +26,21 @@ export default function GameScreen() {
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
+        keys = keys.filter((key) => key !== 'name');
 
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
             for (let i = 0; i < data.length; i++) {
-                if (!probabilities[data[i][key]]) {
+                if (!probabilities[data[i][key]] && data[i][key]) {
                     let probability = data.filter((o) => o[key] === data[i][key]).length / data.length;
                     probabilities[data[i][key]] = { probability, key };
                 }
             }
         });
         // Result for probabilities- {unique valeu: probability, ...}
-        //console.log(probabilities);
+        console.log('probabilities:');
+        console.log(probabilities);
 
         // Find the unique value that will be closest to cut the data to 50%
         // meaning |probability(value)-0.5| will give the minimum result
@@ -54,11 +58,43 @@ export default function GameScreen() {
         return toAsk;
     }
 
+    function yesPressHandler() {
+        let filteredData = data.filter((item) => item[key] === value);
+        setData(filteredData);
+        console.log('filteredData:');
+        console.log(filteredData);
+        setQuestionNum((prev) => prev + 1);
+    }
+
+    function noPressHandler() {
+        let filteredData = data.filter((item) => item[key] !== value);
+        console.log('filteredData:');
+        console.log(filteredData);
+        setData(filteredData);
+        setQuestionNum((prev) => prev + 1);
+    }
+
+    function dontKnowPressHandler() {
+        let filteredData = data;
+
+        for (let i = 0; i < filteredData.length; i++) {
+            if (filteredData[i][key] === value) {
+                filteredData[i][key] = null;
+            }
+        }
+        console.log('filteredData:');
+        console.log(filteredData);
+        setData(filteredData);
+        setQuestionNum((prev) => prev + 1);
+    }
+
     useEffect(() => {
         //let entropyObj = calculateEntropy(data);
-        let [key, value] = decision();
+        let [decidedKey, decidedValue] = decision();
+        setKey(decidedKey);
+        setValue(decidedValue);
         setQuestion('is you charectar ' + key + ' is ' + value + '?');
-    }, [data]);
+    }, [data, key, value]);
 
     return (
         <View style={styles.rootContainer}>
@@ -70,13 +106,13 @@ export default function GameScreen() {
             </View>
             <View style={styles.buttunsContainer}>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>Yes</PrimaryButton>
+                    <PrimaryButton onPress={yesPressHandler}>Yes</PrimaryButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>No</PrimaryButton>
+                    <PrimaryButton onPress={noPressHandler}>No</PrimaryButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>Don't know</PrimaryButton>
+                    <PrimaryButton onPress={dontKnowPressHandler}>Don't know</PrimaryButton>
                 </View>
             </View>
         </View>

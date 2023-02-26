@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import axios from 'axios';
+import apiUrls from '../utils/apiURL';
 
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');

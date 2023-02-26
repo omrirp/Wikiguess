@@ -9,6 +9,7 @@ export default function WelcomeScreen({ navigation }) {
     function signUpHandler() {
         navigation.navigate('SignUpScreen');
     }
+
     return (
         <View style={styles.rootContainer}>
             <View style={styles.headerContainer}>
