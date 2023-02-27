@@ -7,6 +7,7 @@ import LogInScreen from './screens/LogInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import MainMenuScreen from './screens/MainMenuScreen';
 import GameScreen from './screens/GameScreen';
+import GuessScreen from './screens/GuessScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App() {
                     <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
                     <Stack.Screen name='MainMenuScreen' component={MainMenuScreen} />
                     <Stack.Screen name='GameScreen' component={GameScreen} />
+                    <Stack.Screen name='GuessScreen' component={GuessScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

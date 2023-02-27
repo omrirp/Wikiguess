@@ -13,7 +13,9 @@ const dataJason = [
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
-export default function GameScreen() {
+const limit = 4;
+
+export default function GameScreen({ navigation }) {
     const [questionNum, setQuestionNum] = useState(1);
     const [question, setQuestion] = useState('');
     const [data, setData] = useState(dataJason);
@@ -23,6 +25,11 @@ export default function GameScreen() {
 
     // Decide what unique value to use for renderind the question
     function decision() {
+        if (questionNum == limit) {
+            // Need to navigate to anothe screen to guess the charectar
+            navigation.navigate('GuessScreen', { name: data[0].name });
+        }
+
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
@@ -61,14 +68,12 @@ export default function GameScreen() {
     }
 
     function yesPressHandler() {
-        //let filteredData = data.filter((item) => item[key] === value);
         setData((prevData) => prevData.filter((item) => item[key] == value));
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
     }
 
     function noPressHandler() {
-        //let filteredData = data.filter((item) => item[key] !== value);
         setData((prevData) => prevData.filter((item) => item[key] != value));
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
@@ -100,7 +105,7 @@ export default function GameScreen() {
     return (
         <View style={styles.rootContainer}>
             <View style={styles.avatarContainer}>
-                <Avatar />
+                <Avatar lastAnswer={lastAnswer} />
             </View>
             <View style={styles.questionContainer}>
                 <Question questionNum={questionNum} questionText={question} />
@@ -126,15 +131,12 @@ const styles = StyleSheet.create({
     },
     avatarContainer: {
         flex: 1,
-        borderWidth: 1,
     },
     questionContainer: {
         flex: 1,
-        borderWidth: 1,
     },
     buttunsContainer: {
         flex: 1,
-        borderWidth: 1,
         marginHorizontal: 36,
     },
     buttonContainer: {
