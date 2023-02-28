@@ -1,29 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { useState, useEffect } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 
 export default function GuessScreen({ route, navigation }) {
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: null, // This will hide the built-in back button
-        });
+    const [image, setImage] = useState(<Text>Loading...</Text>);
+
+    useEffect(() => {
+        // Need to fetch real Image from Wikipedia...
+        setImage(<Image source={require('../assets/images/tempCharectar.png')} style={styles.image} />);
     }, []);
 
     return (
         <View style={styles.rootContainer}>
-            <View style={styles.ImageContainer}>
-                <View
-                    style={{
-                        backgroundColor: '#06a016',
-                        width: 200,
-                        height: 200,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text>IMAGE</Text>
-                </View>
-            </View>
+            <View style={styles.ImageContainer}>{image}</View>
             <View style={styles.textContainer}>
                 <Text style={styles.text}>Is you'r charectar {route.params.name}?</Text>
             </View>
@@ -32,7 +21,13 @@ export default function GuessScreen({ route, navigation }) {
                     <PrimaryButton>Yes</PrimaryButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>No</PrimaryButton>
+                    <PrimaryButton
+                        onPress={() => {
+                            navigation.navigate('GameScreen');
+                        }}
+                    >
+                        No
+                    </PrimaryButton>
                 </View>
             </View>
         </View>
@@ -45,17 +40,17 @@ const styles = StyleSheet.create({
         margin: 8,
     },
     ImageContainer: {
-        backgroundColor: '#de7c7c',
-        borderWidth: 1,
         height: 350,
         justifyContent: 'center',
         alignItems: 'center',
+        // backgroundColor: '#de7c7c',
+        // borderWidth: 1,
     },
     textContainer: {
-        backgroundColor: '#dbdb82',
         height: 150,
-        borderWidth: 1,
         justifyContent: 'center',
+        // backgroundColor: '#dbdb82',
+        // borderWidth: 1,
     },
     text: {
         fontSize: 30,
@@ -64,10 +59,14 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         flex: 1,
         marginHorizontal: 36,
-        backgroundColor: '#73a2d9',
-        borderWidth: 1,
+        // backgroundColor: '#73a2d9',
+        // borderWidth: 1,
     },
     buttonContainer: {
         marginTop: 6,
+    },
+    image: {
+        height: '95%',
+        width: 280,
     },
 });

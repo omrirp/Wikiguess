@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -20,9 +20,17 @@ export default function App() {
                     <Stack.Screen name='WelcomeScreen' component={WelcomeScreen} />
                     <Stack.Screen name='LogInScreen' component={LogInScreen} />
                     <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
-                    <Stack.Screen name='MainMenuScreen' component={MainMenuScreen} />
+                    <Stack.Screen
+                        name='MainMenuScreen'
+                        component={MainMenuScreen}
+                        options={{ headerLeft: () => <Text></Text> }}
+                    />
                     <Stack.Screen name='GameScreen' component={GameScreen} />
-                    <Stack.Screen name='GuessScreen' component={GuessScreen} />
+                    <Stack.Screen
+                        name='GuessScreen'
+                        component={GuessScreen}
+                        options={{ headerLeft: () => <Text></Text> }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

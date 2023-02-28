@@ -13,7 +13,7 @@ const dataJason = [
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
-const limit = 4;
+let limit = 4;
 
 export default function GameScreen({ navigation }) {
     const [questionNum, setQuestionNum] = useState(1);
@@ -26,12 +26,13 @@ export default function GameScreen({ navigation }) {
     // Decide what unique value to use for renderind the question
     function decision() {
         if (questionNum == limit) {
-            // Need to navigate to anothe screen to guess the charectar
+            limit += 2;
             navigation.navigate('GuessScreen', { name: data[0].name });
         }
 
         let probabilities = {};
         // Asumeing all object have the same attributes
+
         let keys = Object.keys(data[0]);
         keys = keys.filter((key) => key != 'name');
 
@@ -46,6 +47,7 @@ export default function GameScreen({ navigation }) {
             }
         });
         // Result for probabilities- {unique valeu: probability, ...}
+
         //console.log('probabilities:');
         //console.log(probabilities);
         //console.log('data:');
