@@ -7,14 +7,21 @@ export default function GuessScreen({ route, navigation }) {
 
     useEffect(() => {
         // Need to fetch real Image from Wikipedia...
-        setImage(<Image source={require('../assets/images/tempCharectar.png')} style={styles.image} />);
+        setImage(
+            <Image
+                source={{
+                    uri: route.params.imageUrl.replace('http', 'https'),
+                }}
+                style={styles.image}
+            />
+        );
     }, []);
 
     return (
         <View style={styles.rootContainer}>
             <View style={styles.ImageContainer}>{image}</View>
             <View style={styles.textContainer}>
-                <Text style={styles.text}>Is you'r charectar {route.params.name}?</Text>
+                <Text style={styles.text}>Is you'r character {route.params.name}?</Text>
             </View>
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonContainer}>
@@ -74,5 +81,6 @@ const styles = StyleSheet.create({
     image: {
         height: '95%',
         width: 280,
+        borderRadius: 10,
     },
 });

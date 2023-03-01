@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Avatar from '../components/game/Avatar';
 import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import mockData from '../utils/mockData';
 
 const dataJason = [
     { name: 'avi', age: 28, grade: 90, gender: 'male' },
@@ -13,12 +14,12 @@ const dataJason = [
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
-let limit = 4;
+let limit = 8;
 
 export default function GameScreen({ navigation }) {
     const [questionNum, setQuestionNum] = useState(1);
     const [question, setQuestion] = useState('');
-    const [data, setData] = useState(dataJason);
+    const [data, setData] = useState(null);
     const [key, setKey] = useState(null);
     const [value, setValue] = useState(null);
     const [lastAnswer, setLastAnswer] = useState('yes');
@@ -26,8 +27,8 @@ export default function GameScreen({ navigation }) {
     // Decide what unique value to use for renderind the question
     function decision() {
         if (questionNum == limit) {
-            limit += 2;
-            navigation.navigate('GuessScreen', { name: data[0].name });
+            limit += 4;
+            navigation.navigate('GuessScreen', { name: data[0].itemLabel, imageUrl: data[0].imageLabel });
         }
 
         let probabilities = {};
@@ -94,13 +95,25 @@ export default function GameScreen({ navigation }) {
     }
 
     useEffect(() => {
+        // Need to fetch the data from the server here
+        setData(mockData);
+    }, []);
+
+    useEffect(() => {
+        if (!data) {
+            return;
+        }
         //let entropyObj = calculateEntropy(data);
         let [decidedKey, decidedValue] = decision();
         //let askobj = { key: decidedKey, value: decidedValue };
         //console.log('ask:', askobj);
         setKey(decidedKey);
         setValue(decidedValue);
-        setQuestion('is you charectar ' + key + ' is ' + value + '?');
+        let property = '';
+        if (key) {
+            property = key.replace('Label', '');
+        }
+        setQuestion('is you character ' + property + ' is ' + value + '?');
     }, [data, key, value, questionNum]);
 
     return (
