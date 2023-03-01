@@ -18,7 +18,13 @@ export default function GuessScreen({ route, navigation }) {
             </View>
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton>Yes</PrimaryButton>
+                    <PrimaryButton
+                        onPress={() => {
+                            navigation.navigate('GameOverScreen', { result: 'correct' });
+                        }}
+                    >
+                        Yes
+                    </PrimaryButton>
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton

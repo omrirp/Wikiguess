@@ -8,6 +8,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import MainMenuScreen from './screens/MainMenuScreen';
 import GameScreen from './screens/GameScreen';
 import GuessScreen from './screens/GuessScreen';
+import GameOverScreen from './screens/GameOverScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,11 @@ export default function App() {
                     <Stack.Screen
                         name='GuessScreen'
                         component={GuessScreen}
+                        options={{ headerLeft: () => <Text></Text> }}
+                    />
+                    <Stack.Screen
+                        name='GameOverScreen'
+                        component={GameOverScreen}
                         options={{ headerLeft: () => <Text></Text> }}
                     />
                 </Stack.Navigator>

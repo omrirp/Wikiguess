@@ -32,7 +32,6 @@ export default function GameScreen({ navigation }) {
 
         let probabilities = {};
         // Asumeing all object have the same attributes
-
         let keys = Object.keys(data[0]);
         keys = keys.filter((key) => key != 'name');
 
