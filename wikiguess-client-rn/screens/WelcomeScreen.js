@@ -10,6 +10,10 @@ export default function WelcomeScreen({ navigation }) {
         navigation.navigate('SignUpScreen');
     }
 
+    function howtoPlayPressHandler() {
+        navigation.navigate('HowToPlayScreen');
+    }
+
     return (
         <View style={styles.rootContainer}>
             <View style={styles.headerContainer}>
@@ -29,6 +33,9 @@ export default function WelcomeScreen({ navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton onPress={signUpHandler}>Sing Up</PrimaryButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PrimaryButton onPress={howtoPlayPressHandler}>How to play</PrimaryButton>
                 </View>
             </View>
         </View>

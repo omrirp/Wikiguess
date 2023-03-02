@@ -1,9 +1,14 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import SecondaryButton from '../components/ui/SecondaryButton';
 
 export default function MainMenuScreen({ navigation }) {
     function playPressHandler() {
         navigation.navigate('GameScreen');
+    }
+
+    function logOutPressHandler() {
+        navigation.navigate('WelcomeScreen');
     }
 
     return (
@@ -29,6 +34,9 @@ export default function MainMenuScreen({ navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton>Share</PrimaryButton>
+                </View>
+                <View style={styles.footerContainer}>
+                    <SecondaryButton onPress={logOutPressHandler}>Log out!</SecondaryButton>
                 </View>
             </View>
         </View>
@@ -67,5 +75,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginVertical: 8,
+    },
+    footerContainer: {
+        height: '40%',
+        paddingBottom: 36,
+        justifyContent: 'flex-end',
     },
 });

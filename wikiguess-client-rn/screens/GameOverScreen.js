@@ -26,8 +26,8 @@ export default function GameOverScreen({ route, navigation }) {
     return (
         <View style={styles.rootContainer}>
             <View style={styles.ImageContainer}>{image}</View>
-            <View>
-                <Text>{textResult}</Text>
+            <View style={styles.textContainer}>
+                <Text style={styles.text}>{textResult}</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <PrimaryButton onPress={() => navigation.navigate('MainMenuScreen')}>Eng Game</PrimaryButton>
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         margin: 8,
-        alignItems: 'center',
     },
     ImageContainer: {
         height: 350,
@@ -54,6 +53,14 @@ const styles = StyleSheet.create({
         width: 280,
     },
     buttonContainer: {
-        margin: 36,
+        marginVertical: 50,
+        marginHorizontal: 36,
+    },
+    textContainer: {
+        alignItems: 'center',
+        marginVertical: 20,
+    },
+    text: {
+        fontSize: 30,
     },
 });

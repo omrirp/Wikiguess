@@ -9,6 +9,7 @@ import MainMenuScreen from './screens/MainMenuScreen';
 import GameScreen from './screens/GameScreen';
 import GuessScreen from './screens/GuessScreen';
 import GameOverScreen from './screens/GameOverScreen';
+import HowToPlayScreen from './screens/HowToPlayScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ export default function App() {
                         component={GameOverScreen}
                         options={{ headerLeft: () => <Text></Text> }}
                     />
+                    <Stack.Screen name='HowToPlayScreen' component={HowToPlayScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

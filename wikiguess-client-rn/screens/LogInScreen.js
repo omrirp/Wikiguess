@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import SecondaryButton from '../components/ui/SecondaryButton';
 import axios from 'axios';
 import apiUrls from '../utils/apiURL';
 
@@ -26,19 +27,34 @@ export default function LogInScreen({ navigation }) {
         navigation.navigate('MainMenuScreen');
     }
 
+    function toSignupHandler() {
+        navigation.navigate('SignUpScreen');
+    }
+
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Log In</Text>
-            </View>
-            <View style={styles.inputsContainer}>
-                <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
-                <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} />
-            </View>
-            <View style={styles.buttonContainer}>
-                <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>
-            </View>
-        </View>
+        <ScrollView style={styles.rootContainer}>
+            <KeyboardAvoidingView style={styles.rootContainer} behavior='position'>
+                <View style={styles.rootContainer}>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.headerText}>Log In</Text>
+                    </View>
+                    <View style={styles.inputsContainer}>
+                        <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
+                        <PrimaryTextInput
+                            placeholder={'Password'}
+                            onChangeText={passwordTextHandler}
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>
+                    </View>
+                    <View style={styles.footerContainer}>
+                        <SecondaryButton onPress={toSignupHandler}>Not registered? Sign up now!</SecondaryButton>
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
+        </ScrollView>
     );
 }
 
@@ -47,7 +63,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     headerContainer: {
-        flex: 1,
         margin: 30,
         alignItems: 'center',
     },
@@ -56,12 +71,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     inputsContainer: {
-        flex: 1,
         marginHorizontal: 20,
+        marginVertical: 40,
     },
     buttonContainer: {
-        flex: 1,
-        marginVertical: 4,
+        marginVertical: 8,
         marginHorizontal: 50,
+    },
+    footerContainer: {
+        marginTop: 100,
     },
 });

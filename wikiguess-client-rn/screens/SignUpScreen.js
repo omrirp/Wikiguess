@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-
 import { useState } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
+import SecondaryButton from '../components/ui/SecondaryButton';
 
 export default function SignUpScreen({ navigation }) {
     const [emailText, setemailText] = useState('');
@@ -36,6 +37,10 @@ export default function SignUpScreen({ navigation }) {
         navigation.navigate('MainMenuScreen');
     }
 
+    function toLogInHandler() {
+        navigation.navigate('LogInScreen');
+    }
+
     return (
         <ScrollView style={styles.screen}>
             <KeyboardAvoidingView style={styles.screen} behavior='position'>
@@ -46,11 +51,22 @@ export default function SignUpScreen({ navigation }) {
                     <View style={styles.inputesContainer}>
                         <PrimaryTextInput placeholder={'Email Adress'} onChangeText={emailInputHandler} />
                         <PrimaryTextInput placeholder={'User Name'} onChangeText={userNameTextHandler} />
-                        <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} />
-                        <PrimaryTextInput placeholder={'Confirm Password'} onChangeText={passwordConTextHandler} />
+                        <PrimaryTextInput
+                            placeholder={'Password'}
+                            onChangeText={passwordTextHandler}
+                            secureTextEntry={true}
+                        />
+                        <PrimaryTextInput
+                            placeholder={'Confirm Password'}
+                            onChangeText={passwordConTextHandler}
+                            secureTextEntry={true}
+                        />
                     </View>
                     <View style={styles.buttonContainer}>
                         <PrimaryButton onPress={signUpPressHandler}>Sign Up!</PrimaryButton>
+                    </View>
+                    <View style={styles.footerContainer}>
+                        <SecondaryButton onPress={toLogInHandler}>Already registered? Log in here!</SecondaryButton>
                     </View>
                 </View>
             </KeyboardAvoidingView>
@@ -80,5 +96,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: 40,
         marginHorizontal: 50,
+    },
+    footerContainer: {
+        marginTop: 40,
     },
 });
