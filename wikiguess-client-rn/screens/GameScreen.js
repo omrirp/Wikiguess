@@ -5,7 +5,7 @@ import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import mockData from '../utils/mockData';
 
-const dataJason = [
+const miniData = [
     { name: 'avi', age: 28, grade: 90, gender: 'male' },
     { name: 'dani', age: 25, grade: 90, gender: 'male' },
     { name: 'benny', age: 27, grade: 87, gender: 'male' },
@@ -14,28 +14,33 @@ const dataJason = [
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
-let limit = 8;
-
 export default function GameScreen({ navigation }) {
+    // Question counter
     const [questionNum, setQuestionNum] = useState(1);
+    // Question text to render
     const [question, setQuestion] = useState('');
+    // Data from WikiData
     const [data, setData] = useState(null);
+    // The property to ask about
     const [key, setKey] = useState(null);
+    // The value of the property to ask about
     const [value, setValue] = useState(null);
+    // Last answer of the user
     const [lastAnswer, setLastAnswer] = useState('yes');
+    // Questions limit before guessing
+    const [limit, setLimit] = useState(8);
 
     // Decide what unique value to use for renderind the question
     function decision() {
         if (questionNum == limit) {
-            limit += 4;
+            setLimit((prevLimit) => prevLimit + 2);
             navigation.navigate('GuessScreen', { name: data[0].itemLabel, imageUrl: data[0].imageLabel });
         }
 
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
-        keys = keys.filter((key) => key != 'name');
-
+        keys = keys.filter((key) => key != 'itemLabel' && key != 'item' && key != 'articles' && key != 'imageLabel');
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
@@ -100,20 +105,20 @@ export default function GameScreen({ navigation }) {
     }, []);
 
     useEffect(() => {
+        // Cannot run this useEffect function until the data is fetched
         if (!data) {
             return;
         }
-        //let entropyObj = calculateEntropy(data);
-        let [decidedKey, decidedValue] = decision();
-        //let askobj = { key: decidedKey, value: decidedValue };
-        //console.log('ask:', askobj);
-        setKey(decidedKey);
-        setValue(decidedValue);
-        let property = '';
-        if (key) {
-            property = key.replace('Label', '');
+
+        try {
+            let [decidedKey, decidedValue] = decision();
+            setKey(decidedKey);
+            setValue(decidedValue);
+            setQuestion('is you character ' + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
+        } catch (error) {
+            // Catch block will run when data will be empty
+            navigation.navigate('MainMenuScreen');
         }
-        setQuestion('is you character ' + property + ' is ' + value + '?');
     }, [data, key, value, questionNum]);
 
     return (
