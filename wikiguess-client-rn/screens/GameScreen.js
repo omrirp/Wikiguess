@@ -4,6 +4,7 @@ import Avatar from '../components/game/Avatar';
 import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import mockData from '../utils/mockData';
+import GradientBackground from '../components/ui/GradientBackground';
 
 const miniData = [
     { name: 'avi', age: 28, grade: 90, gender: 'male' },
@@ -122,25 +123,27 @@ export default function GameScreen({ navigation }) {
     }, [data, key, value, questionNum]);
 
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.avatarContainer}>
-                <Avatar lastAnswer={lastAnswer} />
-            </View>
-            <View style={styles.questionContainer}>
-                <Question questionNum={questionNum} questionText={question} />
-            </View>
-            <View style={styles.buttunsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={yesPressHandler}>Yes</PrimaryButton>
+        <GradientBackground>
+            <View style={styles.rootContainer}>
+                <View style={styles.avatarContainer}>
+                    <Avatar lastAnswer={lastAnswer} />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={noPressHandler}>No</PrimaryButton>
+                <View style={styles.questionContainer}>
+                    <Question questionNum={questionNum} questionText={question} />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={dontKnowPressHandler}>Don't know</PrimaryButton>
+                <View style={styles.buttunsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={yesPressHandler}>Yes</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={noPressHandler}>No</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={dontKnowPressHandler}>Don't know</PrimaryButton>
+                    </View>
                 </View>
             </View>
-        </View>
+        </GradientBackground>
     );
 }
 

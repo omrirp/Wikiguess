@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function GameOverScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
@@ -24,15 +25,17 @@ export default function GameOverScreen({ route, navigation }) {
     }, []);
 
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.ImageContainer}>{image}</View>
-            <View style={styles.textContainer}>
-                <Text style={styles.text}>{textResult}</Text>
+        <GradientBackground>
+            <View style={styles.rootContainer}>
+                <View style={styles.ImageContainer}>{image}</View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text}>{textResult}</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PrimaryButton onPress={() => navigation.navigate('MainMenuScreen')}>Eng Game</PrimaryButton>
+                </View>
             </View>
-            <View style={styles.buttonContainer}>
-                <PrimaryButton onPress={() => navigation.navigate('MainMenuScreen')}>Eng Game</PrimaryButton>
-            </View>
-        </View>
+        </GradientBackground>
     );
 }
 

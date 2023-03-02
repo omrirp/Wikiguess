@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function WelcomeScreen({ navigation }) {
     function logInHandler() {
@@ -15,30 +16,32 @@ export default function WelcomeScreen({ navigation }) {
     }
 
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>
-                    <Text style={{ color: '#9a0000' }}>Wik</Text>
-                    <Text style={{ color: '#2f9a69' }}>iG</Text>
-                    <Text style={{ color: '#00649c' }}>ue</Text>
-                    <Text style={{ color: '#2f9a69' }}>ss</Text>
-                </Text>
-            </View>
-            <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
-            </View>
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={logInHandler}>Log In</PrimaryButton>
+        <GradientBackground>
+            <View style={styles.rootContainer}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>
+                        <Text style={{ color: '#9a0000' }}>Wik</Text>
+                        <Text style={{ color: '#2f9a69' }}>iG</Text>
+                        <Text style={{ color: '#00649c' }}>ue</Text>
+                        <Text style={{ color: '#2f9a69' }}>ss</Text>
+                    </Text>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={signUpHandler}>Sing Up</PrimaryButton>
+                <View style={styles.imageContainer}>
+                    <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={howtoPlayPressHandler}>How to play</PrimaryButton>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={logInHandler}>Log In</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={signUpHandler}>Sing Up</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={howtoPlayPressHandler}>How to play</PrimaryButton>
+                    </View>
                 </View>
             </View>
-        </View>
+        </GradientBackground>
     );
 }
 

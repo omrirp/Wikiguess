@@ -3,8 +3,7 @@ import { useState } from 'react';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
-import axios from 'axios';
-import apiUrls from '../utils/apiURL';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
@@ -32,29 +31,31 @@ export default function LogInScreen({ navigation }) {
     }
 
     return (
-        <ScrollView style={styles.rootContainer}>
-            <KeyboardAvoidingView style={styles.rootContainer} behavior='position'>
-                <View style={styles.rootContainer}>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>Log In</Text>
+        <GradientBackground>
+            <ScrollView style={styles.rootContainer}>
+                <KeyboardAvoidingView style={styles.rootContainer} behavior='position'>
+                    <View style={styles.rootContainer}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerText}>Log In</Text>
+                        </View>
+                        <View style={styles.inputsContainer}>
+                            <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
+                            <PrimaryTextInput
+                                placeholder={'Password'}
+                                onChangeText={passwordTextHandler}
+                                secureTextEntry={true}
+                            />
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>
+                        </View>
+                        <View style={styles.footerContainer}>
+                            <SecondaryButton onPress={toSignupHandler}>Not registered? Sign up now!</SecondaryButton>
+                        </View>
                     </View>
-                    <View style={styles.inputsContainer}>
-                        <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
-                        <PrimaryTextInput
-                            placeholder={'Password'}
-                            onChangeText={passwordTextHandler}
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>
-                    </View>
-                    <View style={styles.footerContainer}>
-                        <SecondaryButton onPress={toSignupHandler}>Not registered? Sign up now!</SecondaryButton>
-                    </View>
-                </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </GradientBackground>
     );
 }
 

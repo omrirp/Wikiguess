@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function MainMenuScreen({ navigation }) {
     function playPressHandler() {
@@ -12,34 +13,36 @@ export default function MainMenuScreen({ navigation }) {
     }
 
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>
-                    <Text style={{ color: '#9a0000' }}>We</Text>
-                    <Text style={{ color: '#2f9a69' }}>lc</Text>
-                    <Text style={{ color: '#00649c' }}>om</Text>
-                    <Text style={{ color: '#2f9a69' }}>e </Text>
-                    User!
-                </Text>
+        <GradientBackground>
+            <View style={styles.rootContainer}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>
+                        <Text style={{ color: '#9a0000' }}>We</Text>
+                        <Text style={{ color: '#2f9a69' }}>lc</Text>
+                        <Text style={{ color: '#00649c' }}>om</Text>
+                        <Text style={{ color: '#2f9a69' }}>e </Text>
+                        User!
+                    </Text>
+                </View>
+                <View style={styles.imageContainer}>
+                    <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
+                </View>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={playPressHandler}>Play</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton>Statistics</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton>Share</PrimaryButton>
+                    </View>
+                    <View style={styles.footerContainer}>
+                        <SecondaryButton onPress={logOutPressHandler}>Log out!</SecondaryButton>
+                    </View>
+                </View>
             </View>
-            <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
-            </View>
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={playPressHandler}>Play</PrimaryButton>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton>Statistics</PrimaryButton>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton>Share</PrimaryButton>
-                </View>
-                <View style={styles.footerContainer}>
-                    <SecondaryButton onPress={logOutPressHandler}>Log out!</SecondaryButton>
-                </View>
-            </View>
-        </View>
+        </GradientBackground>
     );
 }
 

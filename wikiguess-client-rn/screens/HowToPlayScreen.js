@@ -1,9 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text } from 'react-native';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function HowToPlayScreen() {
-  return (
-    <View>
-      <Text>HowToPlayScreen</Text>
-    </View>
-  )
+    return (
+        <GradientBackground>
+            <View>
+                <Text>HowToPlayScreen</Text>
+            </View>
+        </GradientBackground>
+    );
 }

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import GradientBackground from '../components/ui/GradientBackground';
 
 export default function GuessScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
@@ -18,32 +19,34 @@ export default function GuessScreen({ route, navigation }) {
     }, []);
 
     return (
-        <View style={styles.rootContainer}>
-            <View style={styles.ImageContainer}>{image}</View>
-            <View style={styles.textContainer}>
-                <Text style={styles.text}>Is you'r character {route.params.name}?</Text>
-            </View>
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton
-                        onPress={() => {
-                            navigation.navigate('GameOverScreen', { result: 'correct' });
-                        }}
-                    >
-                        Yes
-                    </PrimaryButton>
+        <GradientBackground>
+            <View style={styles.rootContainer}>
+                <View style={styles.ImageContainer}>{image}</View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text}>Is you'r character {route.params.name}?</Text>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton
-                        onPress={() => {
-                            navigation.navigate('GameScreen');
-                        }}
-                    >
-                        No
-                    </PrimaryButton>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton
+                            onPress={() => {
+                                navigation.navigate('GameOverScreen', { result: 'correct' });
+                            }}
+                        >
+                            Yes
+                        </PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton
+                            onPress={() => {
+                                navigation.navigate('GameScreen');
+                            }}
+                        >
+                            No
+                        </PrimaryButton>
+                    </View>
                 </View>
             </View>
-        </View>
+        </GradientBackground>
     );
 }
 
