@@ -4,6 +4,7 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import PrimaryHeader from '../components/ui/PrimaryHeader';
 
 export default function SignUpScreen({ navigation }) {
     const [emailText, setemailText] = useState('');
@@ -47,9 +48,7 @@ export default function SignUpScreen({ navigation }) {
             <ScrollView style={styles.screen}>
                 <KeyboardAvoidingView style={styles.screen} behavior='position'>
                     <View style={styles.rootContainer}>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.headerText}>Sign Up</Text>
-                        </View>
+                        <PrimaryHeader>Sign Up</PrimaryHeader>
                         <View style={styles.inputesContainer}>
                             <PrimaryTextInput placeholder={'Email Adress'} onChangeText={emailInputHandler} />
                             <PrimaryTextInput placeholder={'User Name'} onChangeText={userNameTextHandler} />
@@ -83,14 +82,6 @@ const styles = StyleSheet.create({
     },
     rootContainer: {
         flex: 1,
-    },
-    headerContainer: {
-        margin: 30,
-        alignItems: 'center',
-    },
-    headerText: {
-        fontSize: 36,
-        fontWeight: 'bold',
     },
     inputesContainer: {
         marginTop: 25,

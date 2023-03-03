@@ -4,6 +4,7 @@ import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import PrimaryHeader from '../components/ui/PrimaryHeader';
 
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
@@ -35,9 +36,7 @@ export default function LogInScreen({ navigation }) {
             <ScrollView style={styles.rootContainer}>
                 <KeyboardAvoidingView style={styles.rootContainer} behavior='position'>
                     <View style={styles.rootContainer}>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.headerText}>Log In</Text>
-                        </View>
+                        <PrimaryHeader>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
                             <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
                             <PrimaryTextInput
@@ -62,14 +61,6 @@ export default function LogInScreen({ navigation }) {
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-    },
-    headerContainer: {
-        margin: 30,
-        alignItems: 'center',
-    },
-    headerText: {
-        fontSize: 36,
-        fontWeight: 'bold',
     },
     inputsContainer: {
         marginHorizontal: 20,

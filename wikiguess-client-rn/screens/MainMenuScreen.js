@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import PrimaryHeader from '../components/ui/PrimaryHeader';
 
 export default function MainMenuScreen({ navigation }) {
     function playPressHandler() {
@@ -15,15 +16,13 @@ export default function MainMenuScreen({ navigation }) {
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>
-                        <Text style={{ color: '#9a0000' }}>We</Text>
-                        <Text style={{ color: '#2f9a69' }}>lc</Text>
-                        <Text style={{ color: '#00649c' }}>om</Text>
-                        <Text style={{ color: '#2f9a69' }}>e </Text>
-                        User!
-                    </Text>
-                </View>
+                <PrimaryHeader>
+                    <Text style={{ color: '#9a0000' }}>We</Text>
+                    <Text style={{ color: '#2f9a69' }}>lc</Text>
+                    <Text style={{ color: '#00649c' }}>om</Text>
+                    <Text style={{ color: '#2f9a69' }}>e </Text>
+                    User!
+                </PrimaryHeader>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
                 </View>
@@ -50,14 +49,6 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         alignItems: 'center',
-    },
-    headerContainer: {
-        marginTop: 30,
-        alignItems: 'center',
-    },
-    headerText: {
-        fontSize: 36,
-        fontWeight: 'bold',
     },
     image: {
         width: '100%',

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 8,
         justifyContent: 'center',
-        backgroundColor: '#a5d5de',
+        backgroundColor: '#83db9d',
         borderRadius: 8,
         elevation: 4,
     },

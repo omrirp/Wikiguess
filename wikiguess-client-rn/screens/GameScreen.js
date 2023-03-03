@@ -15,7 +15,7 @@ const miniData = [
     { name: 'mazal', age: 28, grade: 95, gender: 'female' },
 ];
 
-export default function GameScreen({ navigation }) {
+export default function GameScreen({ navigation, route }) {
     // Question counter
     const [questionNum, setQuestionNum] = useState(1);
     // Question text to render
@@ -29,7 +29,7 @@ export default function GameScreen({ navigation }) {
     // Last answer of the user
     const [lastAnswer, setLastAnswer] = useState('yes');
     // Questions limit before guessing
-    const [limit, setLimit] = useState(8);
+    const [limit, setLimit] = useState(3);
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -104,6 +104,15 @@ export default function GameScreen({ navigation }) {
         // Need to fetch the data from the server here
         setData(mockData);
     }, []);
+
+    // Delete all instances of a certain character that the app guessed wrong on GuessScreen
+    // route.params.toDelete will contain the name of that character
+    useEffect(() => {
+        if (route.params) {
+            setData((prevData) => prevData.filter((item) => item.name != route.params.toDelete));
+            delete route.params;
+        }
+    }, [route]);
 
     useEffect(() => {
         // Cannot run this useEffect function until the data is fetched

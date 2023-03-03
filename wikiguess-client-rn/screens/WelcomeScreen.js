@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import PrimaryHeader from '../components/ui/PrimaryHeader';
 
 export default function WelcomeScreen({ navigation }) {
     function logInHandler() {
@@ -18,14 +19,12 @@ export default function WelcomeScreen({ navigation }) {
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>
-                        <Text style={{ color: '#9a0000' }}>Wik</Text>
-                        <Text style={{ color: '#2f9a69' }}>iG</Text>
-                        <Text style={{ color: '#00649c' }}>ue</Text>
-                        <Text style={{ color: '#2f9a69' }}>ss</Text>
-                    </Text>
-                </View>
+                <PrimaryHeader textStyle={styles.headerText}>
+                    <Text style={{ color: '#9a0000' }}>Wik</Text>
+                    <Text style={{ color: '#2f9a69' }}>iG</Text>
+                    <Text style={{ color: '#00649c' }}>ue</Text>
+                    <Text style={{ color: '#2f9a69' }}>ss</Text>
+                </PrimaryHeader>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
                 </View>
@@ -49,14 +48,9 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
     },
-    headerContainer: {
-        flex: 1,
-        marginTop: 16,
-        alignItems: 'center',
-    },
     headerText: {
         fontWeight: 'bold',
-        fontSize: 40,
+        fontSize: 55,
     },
     image: {
         width: '100%',

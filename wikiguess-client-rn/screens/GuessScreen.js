@@ -38,7 +38,7 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
-                                navigation.navigate('GameScreen');
+                                navigation.navigate('GameScreen', { toDelete: route.params.name });
                             }}
                         >
                             No

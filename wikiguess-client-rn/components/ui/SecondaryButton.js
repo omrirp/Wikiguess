@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#5b81d2',
         textAlign: 'center',
+        textDecorationLine: 'underline',
     },
     pressed: {
         opacity: 0.75,
