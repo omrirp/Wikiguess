@@ -29,7 +29,7 @@ export default function GameScreen({ navigation, route }) {
     // Last answer of the user
     const [lastAnswer, setLastAnswer] = useState('yes');
     // Questions limit before guessing
-    const [limit, setLimit] = useState(3);
+    const [limit, setLimit] = useState(6);
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -109,7 +109,7 @@ export default function GameScreen({ navigation, route }) {
     // route.params.toDelete will contain the name of that character
     useEffect(() => {
         if (route.params) {
-            setData((prevData) => prevData.filter((item) => item.name != route.params.toDelete));
+            setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
             delete route.params;
         }
     }, [route]);
