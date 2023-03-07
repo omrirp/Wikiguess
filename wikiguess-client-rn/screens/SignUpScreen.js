@@ -29,6 +29,7 @@ export default function SignUpScreen({ navigation }) {
     }
 
     function signUpPressHandler() {
+        if(passwordText===passwordConText)
         // const user = {
         //     email: emailText,
         //     userName: userNameText,

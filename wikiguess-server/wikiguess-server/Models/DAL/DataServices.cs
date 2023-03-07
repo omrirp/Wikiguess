@@ -12,20 +12,55 @@ namespace wikiguess_server.Models.DAL
     public class DataServices
     {
         public DataServices() { }
+        internal string insertStat(PlayerGame playerGame)
+        {
+            SqlConnection con = Connect();
+            SqlCommand command = new SqlCommand();
+            try
+            {
+                command.Parameters.AddWithValue("@userEmail", playerGame.UserEmail);
+                command.Parameters.AddWithValue("@questionCount", playerGame.QuestionCount);
+                command.Parameters.AddWithValue("@isCorrect", playerGame.IsCorrect);
+                command.Parameters.AddWithValue("@character", playerGame.Character);
+                command.CommandText = "spInsertGameStatWG";//!!
+                command.Connection = con;
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandTimeout = 10; // in seconds
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                return e.Message.ToString();
 
+
+
+            }
+            con.Close();
+            return playerGame.UserEmail;
+        
+    }
         internal string insertUser(Player player)
         {
             SqlConnection con = Connect();
             SqlCommand command = new SqlCommand();
-            command.Parameters.AddWithValue("@userEmail", player.UserEmail);
-            command.Parameters.AddWithValue("@userName", player.UserName);
-            command.Parameters.AddWithValue("@password", player.Password);
-            command.CommandText = "spInsertPlayerWG";//!!
-            command.Connection = con;
-            command.CommandType = System.Data.CommandType.StoredProcedure;
-            command.CommandTimeout = 10; // in seconds
-            command.ExecuteNonQuery();
-
+            try
+            {
+                command.Parameters.AddWithValue("@userEmail", player.UserEmail);
+                command.Parameters.AddWithValue("@userName", player.UserName);
+                command.Parameters.AddWithValue("@password", player.Password);
+                command.CommandText = "spInsertPlayerWG";//!!
+                command.Connection = con;
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandTimeout = 10; // in seconds
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                return e.Message.ToString();
+                
+                
+                
+            }
             con.Close();
             return player.UserEmail;
         }
