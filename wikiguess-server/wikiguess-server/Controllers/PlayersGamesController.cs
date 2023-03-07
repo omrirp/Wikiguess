@@ -12,9 +12,10 @@ namespace wikiguess_server.Controllers
     public class PlayersGamesController : ApiController
     {
         [HttpGet]
-        public string get()
+        public IHttpActionResult get(string userEmail)
         {
-            return null;
+            Player player = new Player();
+            return Ok(player.getGamesByEmail(userEmail));
         }
 
         // GET api/<controller>/5
@@ -28,14 +29,17 @@ namespace wikiguess_server.Controllers
             }
             catch (SqlException e)
             {
-                return InternalServerError(e.Message.ToString());
-
-
-
+                //return InternalServerError(e);
+                return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NotImplemented)
+                {
+                    Content = new StringContent(e.Message),
+                    ReasonPhrase = "User Email must be provided"
+                });
             }
         }
+
         public string Get(int id)
-        {
+        { 
             return "value";
         }
 

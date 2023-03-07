@@ -36,5 +36,11 @@ namespace wikiguess_server.Models
             DataServices ds = new DataServices();
             return ds.insertUser(this);
         }
+
+        internal List<PlayerGame> getGamesByEmail(string userEmail)
+        {
+            DataServices ds = new DataServices();
+            return ds.readGamesByEmail(userEmail);
+        }
     }
 }

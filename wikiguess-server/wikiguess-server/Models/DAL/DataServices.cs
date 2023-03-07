@@ -12,33 +12,27 @@ namespace wikiguess_server.Models.DAL
     public class DataServices
     {
         public DataServices() { }
+
         internal string insertStat(PlayerGame playerGame)
         {
             SqlConnection con = Connect();
             SqlCommand command = new SqlCommand();
-            try
-            {
-                command.Parameters.AddWithValue("@userEmail", playerGame.UserEmail);
-                command.Parameters.AddWithValue("@questionCount", playerGame.QuestionCount);
-                command.Parameters.AddWithValue("@isCorrect", playerGame.IsCorrect);
-                command.Parameters.AddWithValue("@character", playerGame.Character);
-                command.CommandText = "spInsertGameStatWG";//!!
-                command.Connection = con;
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.CommandTimeout = 10; // in seconds
-                command.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                return e.Message.ToString();
 
+            command.Parameters.AddWithValue("@userEmail", playerGame.UserEmail);
+            command.Parameters.AddWithValue("@questionCount", playerGame.QuestionCount);
+            command.Parameters.AddWithValue("@isCorrect", playerGame.IsCorrect);
+            command.Parameters.AddWithValue("@character", playerGame.Character);
+            command.CommandText = "spInsertGameStatWG";//!!
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
+            command.ExecuteNonQuery();
 
-
-            }
             con.Close();
             return playerGame.UserEmail;
         
-    }
+        }
+
         internal string insertUser(Player player)
         {
             SqlConnection con = Connect();
@@ -56,13 +50,35 @@ namespace wikiguess_server.Models.DAL
             }
             catch (SqlException e)
             {
-                return e.Message.ToString();
-                
-                
-                
+                return e.Message.ToString();      
             }
             con.Close();
             return player.UserEmail;
+        }
+
+        internal List<PlayerGame> readGamesByEmail(string userEmail)
+        {
+            SqlConnection con = Connect();
+            SqlCommand command = new SqlCommand();
+            command.Parameters.AddWithValue("@userEmail", userEmail);
+            command.CommandText = "spGetGamesByEmailWG";//!!
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
+            command.ExecuteNonQuery();
+            SqlDataReader dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            List<PlayerGame> playerGames = new List<PlayerGame>();
+            while (dr.Read())
+            {
+                int gameNumber = Convert.ToInt32(dr["gameNumber"]);
+                DateTime date = Convert.ToDateTime(dr["date"]);
+                int questionCount = Convert.ToInt32(dr["questionCount"]);
+                bool isCorrect = Convert.ToBoolean(dr["isCorrect"]);
+                string character = dr["character"].ToString();
+                playerGames.Add(new PlayerGame(gameNumber, date, questionCount, isCorrect, character));
+            }
+            con.Close();
+            return playerGames;
         }
 
         internal Player readUser(string userEmail, string password)
