@@ -11,6 +11,7 @@ import GameScreen from './screens/GameScreen';
 import GuessScreen from './screens/GuessScreen';
 import GameOverScreen from './screens/GameOverScreen';
 import HowToPlayScreen from './screens/HowToPlayScreen';
+import StatisticsScreen from './screens/StatisticsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,7 @@ export default function App() {
                         options={{ headerLeft: () => <Text></Text> }}
                     />
                     <Stack.Screen name='HowToPlayScreen' component={HowToPlayScreen} />
+                    <Stack.Screen name='StatisticsScreen' component={StatisticsScreen}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </>

@@ -13,6 +13,10 @@ export default function MainMenuScreen({ navigation }) {
         navigation.navigate('WelcomeScreen');
     }
 
+    function statisticsPressHandler() {
+        navigation.navigate('StatisticsScreen');
+    }
+
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
@@ -31,7 +35,7 @@ export default function MainMenuScreen({ navigation }) {
                         <PrimaryButton onPress={playPressHandler}>Play</PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton>Statistics</PrimaryButton>
+                        <PrimaryButton onPress={statisticsPressHandler}>Statistics</PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
                         <PrimaryButton>Share</PrimaryButton>
