@@ -98,35 +98,36 @@ export default function GameScreen({ navigation, route }) {
         setQuestionNum((prev) => prev + 1);
         setLastAnswer("don't know");
     }
-function queryBuilder(){
-    class SPARQLQueryDispatcher {
-        constructor(endpoint) {
-          this.endpoint = endpoint;
+
+    function queryBuilder() {
+        class SPARQLQueryDispatcher {
+            constructor(endpoint) {
+                this.endpoint = endpoint;
+            }
+
+            async query(sparqlQuery) {
+                const fullUrl = this.endpoint + '?query=' + encodeURIComponent(sparqlQuery);
+                const headers = { Accept: 'application/sparql-results+json' };
+
+                const response = await fetch(fullUrl, { headers });
+                const data = await response.json();
+
+                const results = data.results.bindings
+                    .filter((binding) => binding.item != null) // filter out empty objects
+                    .map((binding) => {
+                        const result = {};
+                        for (const key in binding) {
+                            result[key] = binding[key].value;
+                        }
+                        return result;
+                    });
+
+                return results;
+            }
         }
-      
-        async query(sparqlQuery) {
-          const fullUrl = this.endpoint + "?query=" + encodeURIComponent(sparqlQuery);
-          const headers = { Accept: "application/sparql-results+json" };
-      
-          const response = await fetch(fullUrl, { headers });
-          const data = await response.json();
-      
-          const results = data.results.bindings
-            .filter((binding) => binding.item != null) // filter out empty objects
-            .map((binding) => {
-              const result = {};
-              for (const key in binding) {
-                result[key] = binding[key].value;
-              }
-              return result;
-            });
-      
-          return results;
-        }
-      }
-      
-      const endpointUrl = "https://query.wikidata.org/sparql";
-      const sparqlQuery = `SELECT distinct ?item ?itemLabel ?genderLabel  ?occupationLabel ?imageLabel ?militaryRankLabel
+
+        const endpointUrl = 'https://query.wikidata.org/sparql';
+        const sparqlQuery = `SELECT distinct ?item ?itemLabel ?genderLabel  ?occupationLabel ?imageLabel ?militaryRankLabel
       ?countryLabel ?death ?articles ?dateOfBirth 
       ?residenceLabel ?militaryUnitLabel
      ?dateOfDeath  ?deathAge ?age
@@ -162,13 +163,13 @@ function queryBuilder(){
           ?militaryRank rdfs:label ?militaryRankLabel.
         } .
      } ORDER BY DESC (?articles)`;
-      
-      const queryDispatcher = new SPARQLQueryDispatcher(endpointUrl);
-      queryDispatcher.query(sparqlQuery).then((results) => setData(results));
-}
+
+        const queryDispatcher = new SPARQLQueryDispatcher(endpointUrl);
+        queryDispatcher.query(sparqlQuery).then((results) => setData(results));
+    }
+
     useEffect(() => {
-        queryBuilder()
-        
+        queryBuilder();
     }, []);
 
     // Delete all instances of a certain character that the app guessed wrong on GuessScreen

@@ -8,7 +8,7 @@ import HistoryItem from '../components/ui/HistoryItem';
 
 export default function StatisticsScreen() {
     const [stats, setStats] = useState();
-    const [correctItems, setCorrectItems] = useState();
+    const [correctStats, setCorrectStats] = useState([]);
     const [corrects, setCorrects] = useState(1);
     const [incorrects, setInorrects] = useState(1);
     const [history, setHistory] = useState(<Text>Loading...</Text>);
@@ -18,36 +18,22 @@ export default function StatisticsScreen() {
         setStats(statsData);
     }, []);
 
-    function historyHandler() {
-        return (
-            <FlatList
-                data={correctItems}
-                renderItem={(item) => (
-                    <HistoryItem data={item.Date} questionCount={item.QuestionCount} character={item.Character} />
-                )}
-                keyExtractor={(item) => item.GameNumber}
-            />
-        );
-    }
-
     // Display stats
     useEffect(() => {
         if (!stats) {
             return;
         }
+        setCorrectStats(stats.filter((stat) => stat.IsCorrect));
         let dataLength = stats.length;
         let correctsNum = stats.filter((stat) => stat.IsCorrect).length;
         let incorrecsNum = dataLength - correctsNum;
-
-        setCorrectItems(stats.filter((stat) => stat.IsCorrect));
         setCorrects(Math.round((correctsNum / dataLength) * 100));
         setInorrects(Math.round((incorrecsNum / dataLength) * 100));
-        setHistory(historyHandler());
     }, [stats]);
 
     return (
         <GradientBackground>
-            <ScrollView style={styles.rootContainer}>
+            <View style={styles.rootContainer}>
                 <PrimaryHeader>Statistics</PrimaryHeader>
                 <View style={styles.statsContainer}>
                     <StatContainer header={'Personal guesses precentage'}>
@@ -66,10 +52,16 @@ export default function StatisticsScreen() {
                             <View style={[{ backgroundColor: '#9a0000', flex: incorrects }, styles.barItem]}></View>
                         </View>
                     </StatContainer>
-                    <Text style={styles.historyHeader}>Guesses History</Text>
-                    <View>{history}</View>
                 </View>
-            </ScrollView>
+                <Text style={styles.historyHeader}>Guesses History</Text>
+                <FlatList
+                    data={correctStats}
+                    renderItem={(itemData) => {
+                        return <HistoryItem date={itemData.item.Date} questionCount={itemData.item.QuestionCount} character={itemData.item.Character} />;
+                    }}
+                    keyExtractor={(item) => item.GameNumber}
+                />
+            </View>
         </GradientBackground>
     );
 }
@@ -100,5 +92,6 @@ const styles = StyleSheet.create({
     historyHeader: {
         marginVertical: 10,
         fontSize: 21,
+        textAlign: 'center',
     },
 });
