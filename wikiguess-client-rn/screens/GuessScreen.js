@@ -23,7 +23,7 @@ export default function GuessScreen({ route, navigation }) {
             <View style={styles.rootContainer}>
                 <View style={styles.ImageContainer}>{image}</View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>Is you'r character {route.params.name}?</Text>
+                    <Text style={styles.text}>Thinking about {route.params.name}?</Text>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.buttonContainer}>

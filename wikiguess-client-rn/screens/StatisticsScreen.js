@@ -3,20 +3,21 @@ import { useState, useEffect } from 'react';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import statsData from '../utils/mockStats';
-import globData from '../utils/mockStats';
+import globData from '../utils/globData';
 import StatContainer from '../components/ui/StatContainer';
-import HistoryItem from '../components/ui/HistoryItem';
+import GlobStatItem from '../components/ui/GlobStatItem';
 
 export default function StatisticsScreen() {
     const [stats, setStats] = useState();
-    const [correctStats, setCorrectStats] = useState([]);
+    const [globStats, setGlobStats] = useState([]);
     const [corrects, setCorrects] = useState(1);
     const [incorrects, setInorrects] = useState(1);
-    const [history, setHistory] = useState(<Text>Loading...</Text>);
 
     // Need to fetch real stats from the server
     useEffect(() => {
         setStats(statsData);
+        // Need to fetch real Global Data
+        setGlobStats(globData);
     }, []);
 
     // Display stats
@@ -24,7 +25,7 @@ export default function StatisticsScreen() {
         if (!stats) {
             return;
         }
-        setCorrectStats(stats.filter((stat) => stat.IsCorrect));
+
         let dataLength = stats.length;
         let correctsNum = stats.filter((stat) => stat.IsCorrect).length;
         let incorrecsNum = dataLength - correctsNum;
@@ -54,13 +55,13 @@ export default function StatisticsScreen() {
                         </View>
                     </StatContainer>
                 </View>
-                <Text style={styles.historyHeader}>Guesses History</Text>
+                <Text style={styles.historyHeader}>top 10 characters stats</Text>
                 <FlatList
-                    data={correctStats}
+                    data={globStats}
                     renderItem={(itemData) => {
-                        return <HistoryItem date={itemData.item.Date} questionCount={itemData.item.QuestionCount} character={itemData.item.Character} />;
+                        return <GlobStatItem character={itemData.item.character} avgQuestionCount={itemData.item.avgQuestionCount} />;
                     }}
-                    keyExtractor={(item) => item.GameNumber}
+                    keyExtractor={(item, key) => item.character}
                 />
             </View>
         </GradientBackground>

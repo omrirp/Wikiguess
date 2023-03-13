@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Avatar from '../components/game/Avatar';
 import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
-import mockData from '../utils/mockData';
 import GradientBackground from '../components/ui/GradientBackground';
 const miniData = [
     { name: 'avi', age: 28, grade: 90, gender: 'male' },
@@ -128,41 +127,41 @@ export default function GameScreen({ navigation, route }) {
 
         const endpointUrl = 'https://query.wikidata.org/sparql';
         const sparqlQuery = `SELECT distinct ?item ?itemLabel ?genderLabel  ?occupationLabel ?imageLabel ?militaryRankLabel
-      ?countryLabel ?death ?articles ?dateOfBirth 
-      ?residenceLabel ?militaryUnitLabel
-     ?dateOfDeath  ?deathAge ?age
-     {
+        ?countryLabel ?death ?articles ?dateOfBirth 
+        ?residenceLabel ?militaryUnitLabel
+        ?dateOfDeath  ?deathAge ?age
+        {
         ?item wdt:P31 wd:Q5;
-                   wdt:P106 wd:Q82955;
-                   wdt:P27 wd:Q801;
-                    wdt:P21 ?gender;
-                    wdt:P27 ?target_country;
-                    wdt:P27 ?country;
-                    wdt:P106 ?occupation;
-                    wdt:P551 ?residence;
-                    wikibase:sitelinks ?articles . 
+        wdt:P106 wd:Q82955;
+        wdt:P27 wd:Q801;
+        wdt:P21 ?gender;
+        wdt:P27 ?target_country;
+        wdt:P27 ?country;
+        wdt:P106 ?occupation;
+        wdt:P551 ?residence;
+        wikibase:sitelinks ?articles . 
         optional{ ?item wdt:P570 ?death.}
         optional{?item  wdt:P7779 ?militaryUnit.}
         optional{?item wdt:P569 ?dateOfBirth}
         optional{?item wdt:P570 ?dateOfDeath .}
-       optional{?item wdt:P18 ?image .}
-       optional{?item wdt:P410 ?militaryRank .}
+        optional{?item wdt:P18 ?image .}
+        optional{?item wdt:P410 ?militaryRank .}
      
-       bind(year(?dateOfDeath)-year(?dateOfBirth) as ?deathAge)
-       bind(year(xsd:dateTime(now()))-year(?dateOfBirth) as ?age)
+        bind(year(?dateOfDeath)-year(?dateOfBirth) as ?deathAge)
+        bind(year(xsd:dateTime(now()))-year(?dateOfBirth) as ?age)
       
         SERVICE wikibase:label {
-            bd:serviceParam wikibase:language "en" .
-            ?item rdfs:label ?itemLabel .
-            ?gender rdfs:label ?genderLabel .
-            ?occupation rdfs:label ?occupationLabel .
-            ?country rdfs:label ?countryLabel .
-          ?residence rdfs:label ?residenceLabel .
-          ?militaryUnit rdfs:label ?militaryUnitLabel .
-          ?image rdfs:label ?imageLabel.
-          ?militaryRank rdfs:label ?militaryRankLabel.
+        bd:serviceParam wikibase:language "en" .
+        ?item rdfs:label ?itemLabel .
+        ?gender rdfs:label ?genderLabel .
+        ?occupation rdfs:label ?occupationLabel .
+        ?country rdfs:label ?countryLabel .
+        ?residence rdfs:label ?residenceLabel .
+        ?militaryUnit rdfs:label ?militaryUnitLabel .
+        ?image rdfs:label ?imageLabel.
+        ?militaryRank rdfs:label ?militaryRankLabel.
         } .
-     } ORDER BY DESC (?articles)`;
+        } ORDER BY DESC (?articles)`;
 
         const queryDispatcher = new SPARQLQueryDispatcher(endpointUrl);
         queryDispatcher.query(sparqlQuery).then((results) => setData(results));
@@ -191,7 +190,7 @@ export default function GameScreen({ navigation, route }) {
             let [decidedKey, decidedValue] = decision();
             setKey(decidedKey);
             setValue(decidedValue);
-            setQuestion('is you character ' + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
+            setQuestion("is you character's " + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
         } catch (error) {
             // Catch block will run when data will be empty
             navigation.navigate('MainMenuScreen');

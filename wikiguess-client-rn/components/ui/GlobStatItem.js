@@ -1,9 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useState } from 'react';
 
-export default function historyItem({ date, questionCount, character }) {
-    const [dateObj, setDateObj] = useState(new Date(date));
-
+export default function globStatItem({ character, avgQuestionCount }) {
     return (
         <View style={styles.container}>
             <View style={styles.upperContainer}>
@@ -11,10 +8,9 @@ export default function historyItem({ date, questionCount, character }) {
                     <Text style={styles.characterText}>{character} :</Text>
                 </View>
                 <View style={styles.textItem}>
-                    <Text style={styles.questionCountText}>{questionCount} questions</Text>
+                    <Text style={styles.questionCountText}>{avgQuestionCount} questions</Text>
                 </View>
             </View>
-            <Text>on {dateObj.toDateString()}</Text>
         </View>
     );
 }
