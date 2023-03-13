@@ -23,6 +23,7 @@ const statsData = [
         IsCorrect: true,
         Character: 'Leo Messi',
     },
+    
 ];
 
 export default statsData;

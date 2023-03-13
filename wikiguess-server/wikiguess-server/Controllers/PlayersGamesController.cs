@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using wikiguess_server.Models;
+using wikiguess_server.Models.DAL;
 
 namespace wikiguess_server.Controllers
 {
@@ -17,7 +18,12 @@ namespace wikiguess_server.Controllers
             Player player = new Player();
             return Ok(player.getGamesByEmail(userEmail));
         }
-
+        [HttpGet]
+        public IHttpActionResult get()
+        {
+            DataServices ds = new DataServices();
+            return Ok(ds.getGlobalStats());
+        }
         // GET api/<controller>/5
         [HttpPost]
         [Route("api/playersgames/stats")]

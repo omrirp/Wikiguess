@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import statsData from '../utils/mockStats';
+import globData from '../utils/mockStats';
 import StatContainer from '../components/ui/StatContainer';
 import HistoryItem from '../components/ui/HistoryItem';
 
