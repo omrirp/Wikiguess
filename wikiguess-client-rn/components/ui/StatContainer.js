@@ -11,16 +11,17 @@ export default function StatContainer({ children, style, header }) {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#999999',
-        borderWidth: 3,
-        borderColor: '#525252',
-        borderRadius: 16,
+        //backgroundColor: '#999999',
+        //borderWidth: 3,
+        //borderColor: '#525252',
+        //borderRadius: 16,
         width: '95%',
         alignItems: 'center',
     },
     header: {
-        fontSize: 21,
+        fontSize: 22,
         color: '#2f9a69',
         marginBottom: 8,
+        fontWeight: 'bold',
     },
 });

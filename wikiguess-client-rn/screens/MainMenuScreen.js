@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
@@ -32,13 +33,19 @@ export default function MainMenuScreen({ navigation }) {
                 </View>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={playPressHandler}>Play</PrimaryButton>
+                        <PrimaryButton onPress={playPressHandler}>
+                            Play <Ionicons name='game-controller-outline' size={20} />
+                        </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={statisticsPressHandler}>Statistics</PrimaryButton>
+                        <PrimaryButton onPress={statisticsPressHandler}>
+                            Statistics <Ionicons name='stats-chart-outline' size={20} />
+                        </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton>Share</PrimaryButton>
+                        <PrimaryButton>
+                            Share <Ionicons name='share-social-outline' size={20} />
+                        </PrimaryButton>
                     </View>
                     <View style={styles.footerContainer}>
                         <SecondaryButton onPress={logOutPressHandler}>Log out!</SecondaryButton>

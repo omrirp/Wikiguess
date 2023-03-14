@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import Avatar from '../components/game/Avatar';
 import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -51,11 +52,6 @@ export default function GameScreen({ navigation, route }) {
             }
         });
         // Result for probabilities- {unique valeu: probability, ...}
-
-        //console.log('probabilities:');
-        //console.log(probabilities);
-        //console.log('data:');
-        //console.log(data);
 
         // Find the unique value that will be closest to cut the data to 50%
         // meaning |probability(value)-0.5| will give the minimum result
@@ -146,7 +142,7 @@ export default function GameScreen({ navigation, route }) {
         optional{?item wdt:P570 ?dateOfDeath .}
         optional{?item wdt:P18 ?image .}
         optional{?item wdt:P410 ?militaryRank .}
-     
+
         bind(year(?dateOfDeath)-year(?dateOfBirth) as ?deathAge)
         bind(year(xsd:dateTime(now()))-year(?dateOfBirth) as ?age)
       
@@ -208,13 +204,17 @@ export default function GameScreen({ navigation, route }) {
                 </View>
                 <View style={styles.buttunsContainer}>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={yesPressHandler}>Yes</PrimaryButton>
+                        <PrimaryButton onPress={yesPressHandler}>
+                            Yes <Ionicons name='happy-outline' size={20} />
+                        </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={noPressHandler}>No</PrimaryButton>
+                        <PrimaryButton onPress={noPressHandler}>
+                            No <Ionicons name='sad-outline' size={20} />
+                        </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={dontKnowPressHandler}>Don't know</PrimaryButton>
+                        <PrimaryButton onPress={dontKnowPressHandler}>Don't know...</PrimaryButton>
                     </View>
                 </View>
             </View>

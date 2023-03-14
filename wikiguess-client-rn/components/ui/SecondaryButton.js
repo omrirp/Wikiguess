@@ -9,7 +9,6 @@ export default function SecondaryButton({ children, onPress }) {
 }
 
 const styles = StyleSheet.create({
-    container: {},
     text: {
         fontSize: 20,
         fontWeight: 'bold',

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 
@@ -32,7 +33,7 @@ export default function GuessScreen({ route, navigation }) {
                                 navigation.navigate('GameOverScreen', { result: 'correct' });
                             }}
                         >
-                            Yes
+                            Yes <Ionicons name='happy-outline' size={20} />
                         </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -41,7 +42,7 @@ export default function GuessScreen({ route, navigation }) {
                                 navigation.navigate('GameScreen', { toDelete: route.params.name });
                             }}
                         >
-                            No
+                            No <Ionicons name='sad-outline' size={20} />
                         </PrimaryButton>
                     </View>
                 </View>
