@@ -17,12 +17,13 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 8,
         justifyContent: 'center',
-        backgroundColor: '#83db9d',
+        backgroundColor: '#164e63',
         borderRadius: 8,
         elevation: 4,
     },
     text: {
         fontSize: 30,
+        color: 'white',
     },
     questionNum: {
         fontWeight: 'bold',

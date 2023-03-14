@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#5b81d2',
+        color: '#0284c7',
         textAlign: 'center',
         textDecorationLine: 'underline',
     },
