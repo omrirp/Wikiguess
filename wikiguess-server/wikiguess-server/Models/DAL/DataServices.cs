@@ -33,27 +33,23 @@ namespace wikiguess_server.Models.DAL
         
         }
 
-        internal string insertUser(Player player)
+        internal Player insertUser(Player player)
         {
             SqlConnection con = Connect();
             SqlCommand command = new SqlCommand();
-            try
-            {
-                command.Parameters.AddWithValue("@userEmail", player.UserEmail);
-                command.Parameters.AddWithValue("@userName", player.UserName);
-                command.Parameters.AddWithValue("@password", player.Password);
-                command.CommandText = "spInsertPlayerWG";//!!
-                command.Connection = con;
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.CommandTimeout = 10; // in seconds
-                command.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                return e.Message.ToString();      
-            }
+
+            command.Parameters.AddWithValue("@userEmail", player.UserEmail);
+            command.Parameters.AddWithValue("@userName", player.UserName);
+            command.Parameters.AddWithValue("@password", player.Password);
+            command.CommandText = "spInsertPlayerWG";//!!
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
+            command.ExecuteNonQuery();
+      
             con.Close();
-            return player.UserEmail;
+            player.Password = null;
+            return player;
         }
 
         internal dynamic getGlobalStats()
@@ -120,7 +116,7 @@ namespace wikiguess_server.Models.DAL
                     throw new Exception("Invalid password");
                 }
                 con.Close();
-                return new Player(userEmail, userName, password);
+                return new Player(userEmail, userName, null);
             }
             con.Close();
             return null;

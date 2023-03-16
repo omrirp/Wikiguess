@@ -31,7 +31,7 @@ namespace wikiguess_server.Models
             return ds.readUser(userEmail,password);
         }
 
-        internal string createUser()
+        internal Player createUser()
         {
             DataServices ds = new DataServices();
             return ds.insertUser(this);

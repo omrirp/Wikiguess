@@ -11,12 +11,6 @@ namespace wikiguess_server.Controllers
     public class PlayersController : ApiController
     {
 
-        [HttpGet]
-        public string get()
-        {
-            return "wooo";
-        }
-
         [HttpPost]
         [Route("api/players/login")]
         public IHttpActionResult logIng([FromBody] dynamic r)
@@ -26,9 +20,18 @@ namespace wikiguess_server.Controllers
         }
 
         [HttpPost]
+        [Route("api/players/signup")]
         public IHttpActionResult signUp([FromBody] Player player)
         {
-            return Created("Created", player.createUser());
+            try
+            {
+                return Created("Created", player.createUser());
+            }
+            catch (Exception e)
+            {                
+                return BadRequest("This email is already associated with another account");
+            }
+            
         }
     }
 }

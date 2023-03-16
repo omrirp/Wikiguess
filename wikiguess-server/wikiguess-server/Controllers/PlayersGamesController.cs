@@ -20,7 +20,6 @@ namespace wikiguess_server.Controllers
             return Ok(player.getGamesByEmail(userEmail));
         }
 
-
         [HttpGet]
         [Route("api/playersgames/stats/getglobalstats")]
         public IHttpActionResult get()
@@ -29,7 +28,6 @@ namespace wikiguess_server.Controllers
             return Ok(ds.getGlobalStats());
         }
 
-        // GET api/<controller>/5
         [HttpPost]
         [Route("api/playersgames/stats")]
         public IHttpActionResult setStat([FromBody] PlayerGame playerGame)
@@ -47,21 +45,6 @@ namespace wikiguess_server.Controllers
                     ReasonPhrase = "User Email must be provided"
                 });
             }
-        }
-
-        public string Get(int id)
-        { 
-            return "value";
-        }
-
-        
-        public void Post([FromBody] string value)
-        {
-
-        }
-
-        
-
-        
+        }        
     }
 }
