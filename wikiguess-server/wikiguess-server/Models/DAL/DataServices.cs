@@ -56,7 +56,7 @@ namespace wikiguess_server.Models.DAL
             return player.UserEmail;
         }
 
-        internal Dictionary<string,int> getGlobalStats()
+        internal dynamic getGlobalStats()
         {
             SqlConnection con = Connect();
             SqlCommand command = new SqlCommand();
@@ -67,15 +67,15 @@ namespace wikiguess_server.Models.DAL
             command.CommandTimeout = 10; // in seconds
             command.ExecuteNonQuery();
             SqlDataReader dr = command.ExecuteReader(CommandBehavior.CloseConnection);
-            Dictionary<string, int> globalStats = new Dictionary<string, int>();
+            List<dynamic> stats = new List<dynamic>();  
             while (dr.Read())
-            {                
-                int avgQuestionCount = Convert.ToInt32(dr["avgQuestionCount"]);           
-                string character = dr["character"].ToString();
-                globalStats.Add(character, avgQuestionCount);
+            {
+                dynamic stat = new { character = dr["character"].ToString() , avgQuestionCount = Convert.ToInt32(dr["avgQuestionCount"]) };
+
+                stats.Add(stat);
             }
             con.Close();
-            return globalStats;
+            return stats;
         }
 
         internal List<PlayerGame> readGamesByEmail(string userEmail)

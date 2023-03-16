@@ -13,17 +13,22 @@ namespace wikiguess_server.Controllers
     public class PlayersGamesController : ApiController
     {
         [HttpGet]
+        [Route("api/playersgames/stats/getstatsbyemail")]
         public IHttpActionResult get(string userEmail)
         {
             Player player = new Player();
             return Ok(player.getGamesByEmail(userEmail));
         }
+
+
         [HttpGet]
+        [Route("api/playersgames/stats/getglobalstats")]
         public IHttpActionResult get()
         {
             DataServices ds = new DataServices();
             return Ok(ds.getGlobalStats());
         }
+
         // GET api/<controller>/5
         [HttpPost]
         [Route("api/playersgames/stats")]
