@@ -19,14 +19,14 @@ export default function WelcomeScreen({ navigation }) {
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
-                <PrimaryHeader textStyle={styles.headerText}>
+                <PrimaryHeader textStyle={styles.headerText} viewStyle={styles.headerView}>
                     <Text style={{ color: '#9a0000' }}>Wik</Text>
                     <Text style={{ color: '#2f9a69' }}>iG</Text>
                     <Text style={{ color: '#00649c' }}>ue</Text>
                     <Text style={{ color: '#2f9a69' }}>ss</Text>
                 </PrimaryHeader>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
+                    <Image source={require('../assets/images/wikimonsterHeroic.png')} style={styles.image} />
                 </View>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.buttonContainer}>
@@ -47,28 +47,32 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
+        alignItems: 'center',
     },
     headerText: {
         fontWeight: 'bold',
         fontSize: 55,
+    },
+    headerView: {
+        flex: 1,
     },
     image: {
         width: '100%',
         height: '100%',
     },
     imageContainer: {
-        flex: 3,
-        width: 300,
-        height: 200,
+        flex: 4,
+        width: 350,
+        height: 250,
         alignItems: 'center',
-        margin: 36,
     },
     buttonsContainer: {
-        flex: 4,
+        flex: 3,
         marginHorizontal: 50,
         justifyContent: 'center',
     },
     buttonContainer: {
         marginVertical: 8,
+        width: 250,
     },
 });

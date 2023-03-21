@@ -29,7 +29,7 @@ export default function MainMenuScreen({ navigation }) {
                     User!
                 </PrimaryHeader>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/Wikidata-logo.svg.png')} style={styles.image} />
+                    <Image source={require('../assets/images/wikimonsterHeroic.png')} style={styles.image} />
                 </View>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.buttonContainer}>
@@ -66,24 +66,23 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     imageContainer: {
-        width: 150,
-        height: 100,
+        width: 200,
+        height: 250,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 50,
+        //marginTop: 50,
     },
     buttonsContainer: {
         width: '80%',
         marginVertical: 20,
-        //borderWidth: 1,
-        marginTop: 50,
+        marginTop: 10,
     },
     buttonContainer: {
         marginVertical: 8,
     },
     footerContainer: {
-        height: '40%',
-        paddingBottom: 36,
+        height: '25%',
+        paddingBottom: 30,
         justifyContent: 'flex-end',
     },
 });
