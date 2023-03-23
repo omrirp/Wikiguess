@@ -1,22 +1,33 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 
 export default function MainMenuScreen({ navigation }) {
+    const [userText, setUserText] = useState();
+
     function playPressHandler() {
         navigation.navigate('GameScreen');
     }
 
     function logOutPressHandler() {
+        AsyncStorage.clear();
         navigation.navigate('WelcomeScreen');
     }
 
     function statisticsPressHandler() {
         navigation.navigate('StatisticsScreen');
     }
+
+    async function sharePressHandler() {}
+
+    useEffect(async () => {
+        let user = JSON.parse(await AsyncStorage.getItem('user'));
+        setUserText(user.UserName);
+    }, []);
 
     return (
         <GradientBackground>
@@ -26,7 +37,7 @@ export default function MainMenuScreen({ navigation }) {
                     <Text style={{ color: '#2f9a69' }}>lc</Text>
                     <Text style={{ color: '#00649c' }}>om</Text>
                     <Text style={{ color: '#2f9a69' }}>e </Text>
-                    User!
+                    {userText}
                 </PrimaryHeader>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/images/wikimonsterHeroic.png')} style={styles.image} />
@@ -43,7 +54,7 @@ export default function MainMenuScreen({ navigation }) {
                         </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton>
+                        <PrimaryButton onPress={sharePressHandler}>
                             Share <Ionicons name='share-social-outline' size={20} />
                         </PrimaryButton>
                     </View>

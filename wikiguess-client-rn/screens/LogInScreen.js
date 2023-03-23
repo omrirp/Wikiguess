@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { useState } from 'react';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
+import axios from 'axios';
 
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
@@ -19,12 +20,20 @@ export default function LogInScreen({ navigation }) {
     }
 
     function logInPressHandler() {
-        // const user = {
-        //     userEmail: emailText,
-        //     password: passwordText,
-        // };
-        // console.log(user);
-        navigation.navigate('MainMenuScreen');
+        const user = {
+            userEmail: emailText,
+            password: passwordText,
+        };
+        axios
+            .post('http://proj.ruppin.ac.il/cgroup8/prod/api/players/login', user)
+            .then((res) => {
+                delete res.data.Password;
+                AsyncStorage.setItem('user', JSON.stringify(res.data));
+                navigation.navigate('MainMenuScreen');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     function toSignupHandler() {
@@ -39,11 +48,7 @@ export default function LogInScreen({ navigation }) {
                         <PrimaryHeader>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
                             <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
-                            <PrimaryTextInput
-                                placeholder={'Password'}
-                                onChangeText={passwordTextHandler}
-                                secureTextEntry={true}
-                            />
+                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} />
                         </View>
                         <View style={styles.buttonContainer}>
                             <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>

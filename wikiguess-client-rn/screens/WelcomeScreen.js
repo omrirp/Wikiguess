@@ -33,7 +33,7 @@ export default function WelcomeScreen({ navigation }) {
                         <PrimaryButton onPress={logInHandler}>Log In</PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={signUpHandler}>Sing Up</PrimaryButton>
+                        <PrimaryButton onPress={signUpHandler}>Sign Up</PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
                         <PrimaryButton onPress={howtoPlayPressHandler}>How to play</PrimaryButton>

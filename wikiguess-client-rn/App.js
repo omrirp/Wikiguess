@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { createContext } from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,6 +14,7 @@ import HowToPlayScreen from './screens/HowToPlayScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 
 const Stack = createNativeStackNavigator();
+const userContext = createContext()
 
 export default function App() {
     return (

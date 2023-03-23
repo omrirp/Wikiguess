@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import { useState, useEffect } from 'react';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import StatContainer from '../components/ui/StatContainer';
 import GlobStatItem from '../components/ui/GlobStatItem';
 // Mock data for development:
-import statsData from '../utils/mockStats';
 import globData from '../utils/globData';
+import axios from 'axios';
 
 export default function StatisticsScreen() {
     // Personal stats
@@ -18,11 +18,27 @@ export default function StatisticsScreen() {
     // Global stats
     const [globStats, setGlobStats] = useState([]);
 
-    useEffect(() => {
+    useEffect(async () => {
+        let user = JSON.parse(await AsyncStorage.getItem('user'));
+        let qs = '?userEmail=' + user.UserEmail;
         // Need to fetch real stats from the server
-        setPersonalStats(statsData);
+        axios
+            .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getstatsbyemail' + qs)
+            .then((res) => {
+                setPersonalStats(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         // Need to fetch real Global Data
-        setGlobStats(globData);
+        axios
+            .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getglobalstats')
+            .then((res) => {
+                setGlobStats(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     // Display stats

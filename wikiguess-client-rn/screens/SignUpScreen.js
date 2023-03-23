@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { useState } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
+import axios from 'axios';
 
 export default function SignUpScreen({ navigation }) {
     const [emailText, setemailText] = useState('');
@@ -29,15 +30,25 @@ export default function SignUpScreen({ navigation }) {
     }
 
     function signUpPressHandler() {
-        if(passwordText===passwordConText)
-        // const user = {
-        //     email: emailText,
-        //     userName: userNameText,
-        //     password: passwordText,
-        //     passwordCon: passwordConText,
-        // };
-        // console.log(user);
-        navigation.navigate('MainMenuScreen');
+        if (passwordText === passwordConText) {
+            let user = {
+                userEmail: emailText,
+                userName: userNameText,
+                password: passwordText,
+            };
+            console.log(user);
+            axios
+                .post('http://proj.ruppin.ac.il/cgroup8/prod/api/players/signup', user)
+                .then((res) => {
+                    delete res.data.Password;
+                    AsyncStorage.setItem('user', JSON.stringify(res.data));
+                    navigation.navigate('MainMenuScreen');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            //navigation.navigate('MainMenuScreen');
+        }
     }
 
     function toLogInHandler() {
@@ -53,16 +64,8 @@ export default function SignUpScreen({ navigation }) {
                         <View style={styles.inputesContainer}>
                             <PrimaryTextInput placeholder={'Email Adress'} onChangeText={emailInputHandler} />
                             <PrimaryTextInput placeholder={'User Name'} onChangeText={userNameTextHandler} />
-                            <PrimaryTextInput
-                                placeholder={'Password'}
-                                onChangeText={passwordTextHandler}
-                                secureTextEntry={true}
-                            />
-                            <PrimaryTextInput
-                                placeholder={'Confirm Password'}
-                                onChangeText={passwordConTextHandler}
-                                secureTextEntry={true}
-                            />
+                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} />
+                            <PrimaryTextInput placeholder={'Confirm Password'} onChangeText={passwordConTextHandler} secureTextEntry={true} />
                         </View>
                         <View style={styles.buttonContainer}>
                             <PrimaryButton onPress={signUpPressHandler}>Sign Up!</PrimaryButton>
