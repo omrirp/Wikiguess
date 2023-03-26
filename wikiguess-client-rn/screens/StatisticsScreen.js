@@ -4,8 +4,6 @@ import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import StatContainer from '../components/ui/StatContainer';
 import GlobStatItem from '../components/ui/GlobStatItem';
-// Mock data for development:
-import globData from '../utils/globData';
 import axios from 'axios';
 
 export default function StatisticsScreen() {
@@ -18,27 +16,30 @@ export default function StatisticsScreen() {
     // Global stats
     const [globStats, setGlobStats] = useState([]);
 
-    useEffect(async () => {
-        let user = JSON.parse(await AsyncStorage.getItem('user'));
-        let qs = '?userEmail=' + user.UserEmail;
-        // Need to fetch real stats from the server
-        axios
-            .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getstatsbyemail' + qs)
-            .then((res) => {
-                setPersonalStats(res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        // Need to fetch real Global Data
-        axios
-            .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getglobalstats')
-            .then((res) => {
-                setGlobStats(res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    useEffect(() => {
+        async function fetchData() {
+            let user = JSON.parse(await AsyncStorage.getItem('user'));
+            let qs = '?userEmail=' + user.UserEmail;
+            // Need to fetch real stats from the server
+            axios
+                .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getstatsbyemail' + qs)
+                .then((res) => {
+                    setPersonalStats(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            // Need to fetch real Global Data
+            axios
+                .get('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats/getglobalstats')
+                .then((res) => {
+                    setGlobStats(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        fetchData();
     }, []);
 
     // Display stats
@@ -79,7 +80,12 @@ export default function StatisticsScreen() {
                 <FlatList
                     data={globStats}
                     renderItem={(itemData) => {
-                        return <GlobStatItem character={itemData.item.character} avgQuestionCount={itemData.item.avgQuestionCount} />;
+                        return (
+                            <GlobStatItem
+                                character={itemData.item.character}
+                                avgQuestionCount={itemData.item.avgQuestionCount}
+                            />
+                        );
                     }}
                     keyExtractor={(item, key) => item.character}
                 />

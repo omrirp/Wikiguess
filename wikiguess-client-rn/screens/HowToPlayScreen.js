@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 
@@ -8,10 +8,15 @@ export default function HowToPlayScreen() {
             <PrimaryHeader>How to play</PrimaryHeader>
             <View style={styles.instructionsContainer}>
                 <Text style={styles.text}>
-                    {'\u25cf Think abount any character with Wikipedia Page. \n'}
-                    {"\u25cf Answer yes/no/don't know question. \n"}
-                    {'\u25cf We will try to guess who you thought about. \n'}
+                    <Text style={{ color: '#9a0000' }}>
+                        {'\u25cf Think abount any character with Wikipedia Page. \n'}
+                    </Text>
+                    <Text style={{ color: '#2f9a69' }}>{"\u25cf Answer yes/no/don't know question. \n"}</Text>
+                    <Text style={{ color: '#00649c' }}>{'\u25cf We will try to guess who you thought about. \n'}</Text>
                 </Text>
+            </View>
+            <View style={styles.imageContainer}>
+                <Image source={require('../assets/images/wikimonsterHeroic.png')} style={styles.image} />
             </View>
         </GradientBackground>
     );
@@ -24,5 +29,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         lineHeight: 35,
+    },
+    imageContainer: {
+        width: '100%',
+        height: 250,
+        alignItems: 'center',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
     },
 });

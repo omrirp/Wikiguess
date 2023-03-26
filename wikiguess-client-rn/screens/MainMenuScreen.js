@@ -24,9 +24,12 @@ export default function MainMenuScreen({ navigation }) {
 
     async function sharePressHandler() {}
 
-    useEffect(async () => {
-        let user = JSON.parse(await AsyncStorage.getItem('user'));
-        setUserText(user.UserName);
+    useEffect(() => {
+        async function getUser() {
+            let user = JSON.parse(await AsyncStorage.getItem('user'));
+            setUserText(user.UserName);
+        }
+        getUser();
     }, []);
 
     return (

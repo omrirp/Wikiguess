@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { useState } from 'react';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -10,6 +10,7 @@ import axios from 'axios';
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
+    const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
     function useEmailTextHanler(enteredText) {
         setEmailText(enteredText);
@@ -21,7 +22,7 @@ export default function LogInScreen({ navigation }) {
 
     function logInPressHandler() {
         const user = {
-            userEmail: emailText,
+            userEmail: emailText.toLowerCase(),
             password: passwordText,
         };
         axios
@@ -48,7 +49,11 @@ export default function LogInScreen({ navigation }) {
                         <PrimaryHeader>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
                             <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
-                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} />
+                            <PrimaryTextInput
+                                placeholder={'Password'}
+                                onChangeText={passwordTextHandler}
+                                secureTextEntry={true}
+                            />
                         </View>
                         <View style={styles.buttonContainer}>
                             <PrimaryButton onPress={logInPressHandler}>Log In!</PrimaryButton>

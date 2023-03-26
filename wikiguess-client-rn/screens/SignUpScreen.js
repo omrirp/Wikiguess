@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { useState } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
@@ -32,7 +32,7 @@ export default function SignUpScreen({ navigation }) {
     function signUpPressHandler() {
         if (passwordText === passwordConText) {
             let user = {
-                userEmail: emailText,
+                userEmail: emailText.toLowerCase(),
                 userName: userNameText,
                 password: passwordText,
             };
@@ -64,8 +64,16 @@ export default function SignUpScreen({ navigation }) {
                         <View style={styles.inputesContainer}>
                             <PrimaryTextInput placeholder={'Email Adress'} onChangeText={emailInputHandler} />
                             <PrimaryTextInput placeholder={'User Name'} onChangeText={userNameTextHandler} />
-                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} />
-                            <PrimaryTextInput placeholder={'Confirm Password'} onChangeText={passwordConTextHandler} secureTextEntry={true} />
+                            <PrimaryTextInput
+                                placeholder={'Password'}
+                                onChangeText={passwordTextHandler}
+                                secureTextEntry={true}
+                            />
+                            <PrimaryTextInput
+                                placeholder={'Confirm Password'}
+                                onChangeText={passwordConTextHandler}
+                                secureTextEntry={true}
+                            />
                         </View>
                         <View style={styles.buttonContainer}>
                             <PrimaryButton onPress={signUpPressHandler}>Sign Up!</PrimaryButton>
