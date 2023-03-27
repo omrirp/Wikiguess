@@ -7,19 +7,19 @@ export default function Avatar({ lastAnswer }) {
     useEffect(() => {
         switch (lastAnswer) {
             case 'yes': {
-                setImage(<Image source={require('../../assets/images/happy.png')} style={styles.image} />);
+                setImage(<Image source={require('../../assets/images/wikimonsterHappy.png')} style={styles.image} />);
                 break;
             }
             case 'no': {
-                setImage(<Image source={require('../../assets/images/sad.png')} style={styles.image} />);
+                setImage(<Image source={require('../../assets/images/wikimonsterSad.png')} style={styles.image} />);
                 break;
             }
             case "don't know": {
-                setImage(<Image source={require('../../assets/images/sad.png')} style={styles.image} />);
+                setImage(<Image source={require('../../assets/images/wikimonsterThinking.png')} style={styles.image} />);
                 break;
             }
             default:
-                setImage(<Image source={require('../../assets/images/happy.png')} style={styles.image} />);
+                setImage(<Image source={require('../../assets/images/wikimonsterHappy.png')} style={styles.image} />);
                 break;
         }
     }, [lastAnswer]);

@@ -11,12 +11,12 @@ export default function GameOverScreen({ route, navigation }) {
     useEffect(() => {
         switch (route.params.result) {
             case 'correct': {
-                setImage(<Image source={require('../assets/images/happy.png')} style={styles.image} />);
+                setImage(<Image source={require('../assets/images/wikimonsterHappy.png')} style={styles.image} />);
                 setTextResult('Congratulations!');
                 break;
             }
             case 'incorrect': {
-                setImage(<Image source={require('../assets/images/sad.png')} style={styles.image} />);
+                setImage(<Image source={require('../assets/images/wikimonsterSad.png')} style={styles.image} />);
                 setTextResult('Better luck next time...');
                 break;
             }

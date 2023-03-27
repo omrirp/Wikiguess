@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import StatContainer from '../components/ui/StatContainer';
 import GlobStatItem from '../components/ui/GlobStatItem';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function StatisticsScreen() {
     // Personal stats
@@ -80,12 +81,7 @@ export default function StatisticsScreen() {
                 <FlatList
                     data={globStats}
                     renderItem={(itemData) => {
-                        return (
-                            <GlobStatItem
-                                character={itemData.item.character}
-                                avgQuestionCount={itemData.item.avgQuestionCount}
-                            />
-                        );
+                        return <GlobStatItem character={itemData.item.character} avgQuestionCount={itemData.item.avgQuestionCount} />;
                     }}
                     keyExtractor={(item, key) => item.character}
                 />

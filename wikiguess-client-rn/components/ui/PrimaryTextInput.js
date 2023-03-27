@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet } from 'react-native';
 
-export default function PrimaryTextInput({ placeholder, onChangeText, secureTextEntry }) {
+export default function PrimaryTextInput({ placeholder, onChangeText, secureTextEntry, value }) {
     return (
         <View>
             <TextInput
@@ -8,6 +8,7 @@ export default function PrimaryTextInput({ placeholder, onChangeText, secureText
                 onChangeText={onChangeText}
                 style={styles.input}
                 secureTextEntry={secureTextEntry ? secureTextEntry : false}
+                value={value}
             />
         </View>
     );

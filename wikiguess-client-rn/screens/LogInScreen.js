@@ -1,11 +1,13 @@
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, AsyncStorage } from 'react-native';
-import { useState } from 'react';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { CheckBox } from 'react-native-elements';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
@@ -25,6 +27,13 @@ export default function LogInScreen({ navigation }) {
             userEmail: emailText.toLowerCase(),
             password: passwordText,
         };
+
+        if (toggleCheckBox) {
+            AsyncStorage.setItem('rememberMe', JSON.stringify(user));
+        } else {
+            AsyncStorage.removeItem('rememberMe');
+        }
+
         axios
             .post('http://proj.ruppin.ac.il/cgroup8/prod/api/players/login', user)
             .then((res) => {
@@ -41,6 +50,22 @@ export default function LogInScreen({ navigation }) {
         navigation.navigate('SignUpScreen');
     }
 
+    function rememberMeHandler() {
+        setToggleCheckBox(!toggleCheckBox);
+    }
+
+    useEffect(() => {
+        async function isRemembered() {
+            let userdetails = JSON.parse(await AsyncStorage.getItem('rememberMe'));
+            if (userdetails) {
+                setEmailText(userdetails.userEmail);
+                setPasswordText(userdetails.password);
+                setToggleCheckBox(true);
+            }
+        }
+        isRemembered();
+    }, []);
+
     return (
         <GradientBackground>
             <ScrollView style={styles.rootContainer}>
@@ -48,11 +73,15 @@ export default function LogInScreen({ navigation }) {
                     <View style={styles.rootContainer}>
                         <PrimaryHeader>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
-                            <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} />
-                            <PrimaryTextInput
-                                placeholder={'Password'}
-                                onChangeText={passwordTextHandler}
-                                secureTextEntry={true}
+                            <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} value={emailText} />
+                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} value={passwordText} />
+                            <CheckBox
+                                title='Remember me'
+                                checked={toggleCheckBox}
+                                onPress={rememberMeHandler}
+                                containerStyle={{ backgroundColor: 'none', borderWidth: 0 }}
+                                checkedColor='#0e7490'
+                                uncheckedColor='black'
                             />
                         </View>
                         <View style={styles.buttonContainer}>

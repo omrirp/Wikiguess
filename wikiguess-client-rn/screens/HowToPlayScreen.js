@@ -8,15 +8,13 @@ export default function HowToPlayScreen() {
             <PrimaryHeader>How to play</PrimaryHeader>
             <View style={styles.instructionsContainer}>
                 <Text style={styles.text}>
-                    <Text style={{ color: '#9a0000' }}>
-                        {'\u25cf Think abount any character with Wikipedia Page. \n'}
-                    </Text>
+                    <Text style={{ color: '#9a0000' }}>{'\u25cf Think abount any character with Wikipedia Page. \n'}</Text>
                     <Text style={{ color: '#2f9a69' }}>{"\u25cf Answer yes/no/don't know question. \n"}</Text>
                     <Text style={{ color: '#00649c' }}>{'\u25cf We will try to guess who you thought about. \n'}</Text>
                 </Text>
             </View>
             <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/wikimonsterHeroic.png')} style={styles.image} />
+                <Image source={require('../assets/images/wikimonsterThinking.png')} style={styles.image} />
             </View>
         </GradientBackground>
     );

@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, Image, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import SecondaryButton from '../components/ui/SecondaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import PrimaryHeader from '../components/ui/PrimaryHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MainMenuScreen({ navigation }) {
     const [userText, setUserText] = useState();
@@ -14,7 +15,7 @@ export default function MainMenuScreen({ navigation }) {
     }
 
     function logOutPressHandler() {
-        AsyncStorage.clear();
+        AsyncStorage.removeItem('user');
         navigation.navigate('WelcomeScreen');
     }
 
