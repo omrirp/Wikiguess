@@ -19,13 +19,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#0e7490',
         paddingVertical: 8,
         paddingHorizontal: 16,
-        elevation: 2,
     },
     buttonOuterContainer: {
         borderRadius: 28,
         margin: 4,
         overflow: 'hidden',
-        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        elevation: 6,
     },
     buttonText: {
         color: 'white',
