@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
@@ -13,6 +13,7 @@ export default function LogInScreen({ navigation }) {
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
+    const [invalidEorP, setInvalidEorP] = useState('');
 
     function useEmailTextHanler(enteredText) {
         setEmailText(enteredText);
@@ -42,7 +43,7 @@ export default function LogInScreen({ navigation }) {
                 navigation.navigate('MainMenuScreen');
             })
             .catch((error) => {
-                console.log(error);
+                setInvalidEorP(<Text style={{ color: '#9a0000' }}>* Invalid email or password</Text>);
             });
     }
 
@@ -73,6 +74,7 @@ export default function LogInScreen({ navigation }) {
                     <View style={styles.rootContainer}>
                         <PrimaryHeader>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
+                            {invalidEorP}
                             <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} value={emailText} />
                             <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} value={passwordText} />
                             <CheckBox
