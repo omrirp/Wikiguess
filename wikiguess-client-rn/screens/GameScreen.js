@@ -29,6 +29,8 @@ export default function GameScreen({ navigation, route }) {
     const [lastAnswer, setLastAnswer] = useState('yes');
     // Questions limit before guessing
     const [limit, setLimit] = useState(6);
+    // String that will contain SparQL code to send directly yo WikiData API
+    const [querry, setQuerry] = useState('');
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -73,12 +75,14 @@ export default function GameScreen({ navigation, route }) {
         setData((prevData) => prevData.filter((item) => item[key] == value));
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
+        getPidAndQid(key.replace('Label', ''), value, 'yes');
     }
 
     function noPressHandler() {
         setData((prevData) => prevData.filter((item) => item[key] != value));
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
+        getPidAndQid(key.replace('Label', ''), value, 'no');
     }
 
     function dontKnowPressHandler() {
@@ -92,6 +96,27 @@ export default function GameScreen({ navigation, route }) {
         });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer("don't know");
+    }
+
+    async function getPidAndQid(propertyLabel, valueLabel, answer) {
+        const propertyUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${propertyLabel}&format=json&language=en&type=property`;
+        const valueUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${valueLabel}&format=json&language=en`;
+
+        const propertyResponse = await fetch(propertyUrl);
+        const propertyData = await propertyResponse.json();
+        const pid = propertyData.search[0].id;
+
+        const entityResponse = await fetch(valueUrl);
+        const valueData = await entityResponse.json();
+        const qid = valueData.search[0].id;
+
+        //return [pid, qid];
+        if (answer == 'yes') {
+            setQuerry((prevQuerry) => prevQuerry + `wdt:${pid} wd:${qid}; . `);
+        }
+        if (answer == 'no') {
+            setQuerry((prevQuerry) => prevQuerry + `FILTER NOT EXISTS { wdt:${pid} wd:${qid} } .`);
+        }
     }
 
     function queryBuilder() {
@@ -174,6 +199,7 @@ export default function GameScreen({ navigation, route }) {
             setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
             delete route.params;
         }
+        // Need to send SparQl querry here !!!
     }, [route]);
 
     useEffect(() => {
