@@ -23,7 +23,9 @@ export default function MainMenuScreen({ navigation }) {
         navigation.navigate('StatisticsScreen');
     }
 
-    async function sharePressHandler() {}
+    async function wikipediaPressHandler() {
+        navigation.navigate('WikipediaScreen');
+    }
 
     useEffect(() => {
         async function getUser() {
@@ -58,8 +60,8 @@ export default function MainMenuScreen({ navigation }) {
                         </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={sharePressHandler}>
-                            Share <Ionicons name='share-social-outline' size={20} />
+                        <PrimaryButton onPress={wikipediaPressHandler}>
+                            Wikipedia <Ionicons name='globe-outline' size={20} />
                         </PrimaryButton>
                     </View>
                     <View style={styles.footerContainer}>

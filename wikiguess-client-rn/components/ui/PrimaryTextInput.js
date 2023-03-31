@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
         height: 50,
         margin: 4,
         fontSize: 20,
-        paddingLeft: 4,
+        padding: 4,
     },
 });

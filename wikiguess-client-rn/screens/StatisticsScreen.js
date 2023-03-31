@@ -58,7 +58,7 @@ export default function StatisticsScreen() {
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
-                <PrimaryHeader>Statistics</PrimaryHeader>
+                {/* <PrimaryHeader>Statistics</PrimaryHeader> */}
                 <View style={styles.statsContainer}>
                     <StatContainer header={'Personal guesses precentage'}>
                         <View style={styles.statHeadersContainer}>
@@ -81,7 +81,12 @@ export default function StatisticsScreen() {
                 <FlatList
                     data={globStats}
                     renderItem={(itemData) => {
-                        return <GlobStatItem character={itemData.item.character} avgQuestionCount={itemData.item.avgQuestionCount} />;
+                        return (
+                            <GlobStatItem
+                                character={itemData.item.character}
+                                avgQuestionCount={itemData.item.avgQuestionCount}
+                            />
+                        );
                     }}
                     keyExtractor={(item, key) => item.character}
                 />

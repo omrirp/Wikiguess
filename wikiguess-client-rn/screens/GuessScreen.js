@@ -60,14 +60,10 @@ const styles = StyleSheet.create({
         height: 350,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#de7c7c',
-        // borderWidth: 1,
     },
     textContainer: {
         height: 150,
         justifyContent: 'center',
-        // backgroundColor: '#dbdb82',
-        // borderWidth: 1,
     },
     text: {
         fontSize: 30,
@@ -76,8 +72,6 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         flex: 1,
         marginHorizontal: 36,
-        // backgroundColor: '#73a2d9',
-        // borderWidth: 1,
     },
     buttonContainer: {
         marginTop: 6,

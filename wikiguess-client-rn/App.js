@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { createContext } from 'react';
-import { Text } from 'react-native';
+import { Text, Image, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -12,11 +11,23 @@ import GuessScreen from './screens/GuessScreen';
 import GameOverScreen from './screens/GameOverScreen';
 import HowToPlayScreen from './screens/HowToPlayScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
+import WikipediaScreen from './screens/WikipediaScreen';
 
 const Stack = createNativeStackNavigator();
-const userContext = createContext()
 
 export default function App() {
+    const wikiDataImg = (
+        <View style={styles.imageContainer}>
+            <Image source={require('./assets/images/Wikidata-logo.svg.png')} style={styles.image} />
+        </View>
+    );
+
+    const WikipediaImg = (
+        <View style={styles.imageContainer}>
+            <Image source={require('./assets/images/WikipediaLogo.svg.png')} style={styles.image} />
+        </View>
+    );
+
     return (
         <>
             <StatusBar style='light' />
@@ -28,19 +39,97 @@ export default function App() {
                             backgroundColor: '#737373',
                         },
                         headerTintColor: 'white',
+                        headerRight: () => wikiDataImg,
                     }}
                 >
-                    <Stack.Screen name='WelcomeScreen' component={WelcomeScreen} />
-                    <Stack.Screen name='LogInScreen' component={LogInScreen} />
-                    <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
-                    <Stack.Screen name='MainMenuScreen' component={MainMenuScreen} options={{ headerLeft: () => <Text></Text> }} />
-                    <Stack.Screen name='GameScreen' component={GameScreen} />
-                    <Stack.Screen name='GuessScreen' component={GuessScreen} options={{ headerLeft: () => <Text></Text> }} />
-                    <Stack.Screen name='GameOverScreen' component={GameOverScreen} options={{ headerLeft: () => <Text></Text> }} />
-                    <Stack.Screen name='HowToPlayScreen' component={HowToPlayScreen} />
-                    <Stack.Screen name='StatisticsScreen' component={StatisticsScreen} />
+                    <Stack.Screen
+                        name='WelcomeScreen'
+                        component={WelcomeScreen}
+                        options={{
+                            title: 'Welcome',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='LogInScreen'
+                        component={LogInScreen}
+                        options={{
+                            title: 'Log in',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='SignUpScreen'
+                        component={SignUpScreen}
+                        options={{
+                            title: 'Sing up',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='MainMenuScreen'
+                        component={MainMenuScreen}
+                        options={{
+                            title: 'Main menu',
+                            headerLeft: () => <Text></Text>,
+                        }}
+                    />
+                    <Stack.Screen
+                        name='GameScreen'
+                        component={GameScreen}
+                        options={{
+                            title: 'Game',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='GuessScreen'
+                        component={GuessScreen}
+                        options={{
+                            title: '',
+                            headerLeft: () => <Text></Text>,
+                        }}
+                    />
+                    <Stack.Screen
+                        name='GameOverScreen'
+                        component={GameOverScreen}
+                        options={{
+                            title: 'Game Over',
+                            headerLeft: () => <Text></Text>,
+                        }}
+                    />
+                    <Stack.Screen
+                        name='HowToPlayScreen'
+                        component={HowToPlayScreen}
+                        options={{
+                            title: '',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='StatisticsScreen'
+                        component={StatisticsScreen}
+                        options={{
+                            title: 'Statistics',
+                        }}
+                    />
+                    <Stack.Screen
+                        name='WikipediaScreen'
+                        component={WikipediaScreen}
+                        options={{
+                            title: 'Wikipedia',
+                            headerRight: () => WikipediaImg,
+                        }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    imageContainer: {
+        width: 55,
+        height: 50,
+        marginRight: 2,
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+    },
+});
