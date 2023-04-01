@@ -164,7 +164,8 @@ export default function GameScreen({ navigation, route }) {
             if (!isQueried) {
                 //console.log(queryAdds);
                 //console.log(queryNots);
-                queryBuilder(queryAdds, queryNots);
+                // Do not send the request for now...
+                //queryBuilder(queryAdds, queryNots);
                 setIsQueried(true);
             } else {
                 navigation.navigate('GameOverScreen', { result: 'incorrect' });
