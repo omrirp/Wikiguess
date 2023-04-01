@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, unstable_enableLogBox } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Avatar from '../components/game/Avatar';
@@ -30,8 +30,12 @@ export default function GameScreen({ navigation, route }) {
     const [lastAnswer, setLastAnswer] = useState('yes');
     // Questions limit before guessing
     const [limit, setLimit] = useState(6);
-    // String that will contain SparQL code to send directly yo WikiData API
-    const [querry, setQuerry] = useState('');
+    // String that will contain SparQL code with properties to add
+    const [queryAdds, setQueryAdds] = useState('');
+    // String that will contain SparQL code with not properties to add
+    const [queryNots, setQueryNots] = useState('');
+    // Set this to true when query to WikiData API in the middle of the game
+    const [isQueried, setIsQueried] = useState(false);
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -113,19 +117,21 @@ export default function GameScreen({ navigation, route }) {
             const qid = valueData.search[0].id;
 
             if (answer == 'yes') {
-                setQuerry((prevQuerry) => prevQuerry + `wdt:${pid} wd:${qid}; . `);
+                setQueryAdds((prevQuerry) => prevQuerry + `wdt:${pid} wd:${qid}; `);
             }
             if (answer == 'no') {
-                setQuerry((prevQuerry) => prevQuerry + `FILTER NOT EXISTS { wdt:${pid} wd:${qid} } . `);
+                setQueryNots((prevQuerry) => prevQuerry + `MINUS {?item wdt:${pid} wd:${qid} } `);
             }
         } catch (error) {
             console.log('invalid property or value: ' + propertyLabel + ': ' + valueLabel);
         }
     }
 
-    function queryBuilder(additions = '') {
-        const queryDispatcher = new SPARQLQueryDispatcher(additions);
-        queryDispatcher.query().then((results) => setData(results));
+    function queryBuilder(additions = '', notAdditions = '') {
+        const queryDispatcher = new SPARQLQueryDispatcher(additions, notAdditions);
+        queryDispatcher.query().then((results) => {
+            setData(results);
+        });
     }
 
     useEffect(() => {
@@ -155,7 +161,14 @@ export default function GameScreen({ navigation, route }) {
             setQuestion("is you character's " + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
         } catch (error) {
             // Catch block will run when data will be empty
-            navigation.navigate('MainMenuScreen');
+            if (!isQueried) {
+                //console.log(queryAdds);
+                //console.log(queryNots);
+                queryBuilder(queryAdds, queryNots);
+                setIsQueried(true);
+            } else {
+                navigation.navigate('GameOverScreen', { result: 'incorrect' });
+            }
         }
     }, [data, key, value, questionNum]);
 
