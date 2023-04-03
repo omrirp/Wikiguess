@@ -30,7 +30,11 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
-                                navigation.navigate('GameOverScreen', { result: 'correct' });
+                                navigation.navigate('GameOverScreen', {
+                                    result: 'correct',
+                                    character: route.params.name,
+                                    questionCount: route.params.questionCount,
+                                });
                             }}
                         >
                             Yes <Ionicons name='happy-outline' size={20} />

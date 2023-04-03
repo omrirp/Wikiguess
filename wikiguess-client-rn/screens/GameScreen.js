@@ -41,7 +41,7 @@ export default function GameScreen({ navigation, route }) {
     function decision() {
         if (questionNum == limit) {
             setLimit((prevLimit) => prevLimit + 2);
-            navigation.navigate('GuessScreen', { name: data[0].itemLabel, imageUrl: data[0].imageLabel });
+            navigation.navigate('GuessScreen', { name: data[0].itemLabel, imageUrl: data[0].imageLabel, questionCount: questionNum });
         }
 
         let probabilities = {};
@@ -168,7 +168,7 @@ export default function GameScreen({ navigation, route }) {
                 //queryBuilder(queryAdds, queryNots);
                 setIsQueried(true);
             } else {
-                navigation.navigate('GameOverScreen', { result: 'incorrect' });
+                navigation.navigate('GameOverScreen', { result: 'incorrect', questionCount: questionNum });
             }
         }
     }, [data, key, value, questionNum]);

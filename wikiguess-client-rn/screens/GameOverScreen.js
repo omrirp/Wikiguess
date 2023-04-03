@@ -3,12 +3,34 @@ import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export default function GameOverScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
     const [textResult, setTextResult] = useState('Loading...');
+    const [userEmail, setUserEmail] = useState('');
+
+    function endGamePressHandler() {
+        const stat = {
+            UserEmail: userEmail,
+            QuestionCount: route.params.questionCount,
+            isCorrect: route.params.result == 'correct',
+            Character: route.params.character ? route.params.character : null,
+        };
+        axios.post('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats', stat).catch((error) => {
+            console.log(error);
+        });
+        navigation.navigate('MainMenuScreen');
+    }
 
     useEffect(() => {
+        async function getUserEmail() {
+            let user = JSON.parse(await AsyncStorage.getItem('user'));
+            setUserEmail(user.UserEmail);
+        }
+        getUserEmail();
+
         switch (route.params.result) {
             case 'correct': {
                 setImage(<Image source={require('../assets/images/wikimonsterHappy.png')} style={styles.image} />);
@@ -33,7 +55,7 @@ export default function GameOverScreen({ route, navigation }) {
                     <Text style={styles.text}>{textResult}</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={() => navigation.navigate('MainMenuScreen')}>
+                    <PrimaryButton onPress={endGamePressHandler}>
                         Eng Game <Ionicons name='trophy-outline' size={20} />
                     </PrimaryButton>
                 </View>
