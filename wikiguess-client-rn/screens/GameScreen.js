@@ -158,7 +158,7 @@ export default function GameScreen({ navigation, route }) {
             let [decidedKey, decidedValue] = decision();
             setKey(decidedKey);
             setValue(decidedValue);
-            setQuestion("is you character's " + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
+            setQuestion("is your character's " + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
         } catch (error) {
             // Catch block will run when data will be empty
             if (!isQueried) {
