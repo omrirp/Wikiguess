@@ -7,13 +7,100 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
 const miniData = [
-    { name: 'avi', age: 28, grade: 90, gender: 'male' },
-    { name: 'dani', age: 25, grade: 90, gender: 'male' },
-    { name: 'benny', age: 27, grade: 87, gender: 'male' },
-    { name: 'shmulik', age: 26, grade: 74, gender: 'male' },
-    { name: 'rivka', age: 25, grade: 70, gender: 'female' },
-    { name: 'mazal', age: 28, grade: 95, gender: 'female' },
+    {
+        item: 'http://www.wikidata.org/entity/Q43723',
+        itemLabel: 'Benjamin Netanyahu',
+        genderLabel: 'male',
+        occupation: 'politician, diplomat, political scientist, political writer',
+        country: 'Israel',
+        articles: '140',
+        dateOfBirth: '1949-10-21T00:00:00Z',
+        residence: 'Jerusalem, Caesarea, Beit Aghion',
+        age: '74',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q42992',
+        itemLabel: 'Golda Meir',
+        genderLabel: 'female',
+        occupation: 'politician, teacher',
+        country: 'Israel, United States of America',
+        death: '1978-12-08T00:00:00Z',
+        articles: '120',
+        dateOfBirth: '1898-05-03T00:00:00Z',
+        residence: 'United States of America, Moscow, Jerusalem',
+        dateOfDeath: '1978-12-08T00:00:00Z',
+        deathAge: '80',
+        age: '125',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q39318',
+        itemLabel: 'Naftali Bennett',
+        genderLabel: 'male',
+        occupation: 'businessperson, politician',
+        country: 'Israel',
+        articles: '84',
+        dateOfBirth: '1972-03-25T00:00:00Z',
+        residence: "Ra'anana",
+        age: '51',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q1396120',
+        itemLabel: 'Yair Lapid',
+        genderLabel: 'male',
+        occupation: 'actor, writer, politician, television presenter',
+        country: 'Israel',
+        articles: '64',
+        dateOfBirth: '1963-11-05T00:00:00Z',
+        residence: 'Tel Aviv',
+        age: '60',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q983258',
+        itemLabel: 'Isaac Herzog',
+        genderLabel: 'male',
+        occupation: 'lawyer, politician, advocate',
+        country: 'Israel',
+        articles: '62',
+        dateOfBirth: '1960-09-22T00:00:00Z',
+        residence: 'Tel Aviv',
+        age: '63',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q151796',
+        itemLabel: 'Tzipi Livni',
+        genderLabel: 'female',
+        occupation: 'lawyer, politician, diplomat, advocate, chief executive officer',
+        country: 'Israel',
+        articles: '62',
+        dateOfBirth: '1958-07-08T00:00:00Z',
+        residence: 'Tel Aviv',
+        age: '65',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q171428',
+        itemLabel: 'Roman Abramovich',
+        genderLabel: 'male',
+        occupation: 'politician, entrepreneur',
+        country: 'Portugal, Russia, Israel, Soviet Union',
+        articles: '60',
+        dateOfBirth: '1966-10-24T00:00:00Z',
+        residence: 'London, Moscow',
+        age: '57',
+    },
+    {
+        item: 'http://www.wikidata.org/entity/Q58311',
+        itemLabel: 'Avigdor Lieberman',
+        genderLabel: 'male',
+        occupation: 'politician, chief executive officer',
+        country: 'Israel',
+        articles: '53',
+        dateOfBirth: '1958-07-05T00:00:00Z',
+        residence: 'Nokdim',
+        age: '65',
+    },
 ];
+
+const multiValueKeys = ['residence', 'occupation', 'country'];
 
 export default function GameScreen({ navigation, route }) {
     // Question counter
@@ -52,9 +139,28 @@ export default function GameScreen({ navigation, route }) {
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
             for (let i = 0; i < data.length; i++) {
-                if (!probabilities[data[i][key]] && data[i][key]) {
-                    let probability = data.filter((o) => o[key] == data[i][key]).length / data.length;
-                    probabilities[data[i][key]] = { probability, key };
+                // Check if the key is an array of values
+                if (multiValueKeys.includes(key)) {
+                    let subs = data[i][key].split(', ');
+                    // Calculate the probabilities of each unique value in the array
+                    for (let j = 0; j < subs.length; j++) {
+                        if (!probabilities[subs[j]] && data[i][key]) {
+                            let probability =
+                                data.filter((o) => {
+                                    let subsToCompare = o[key].split(', ');
+                                    if (subsToCompare.includes(subs[j])) {
+                                        return o;
+                                    }
+                                }).length / data.length;
+                            probabilities[subs[j]] = { probability, key };
+                        }
+                    }
+                } else {
+                    // Calculate the probability of the individual value
+                    if (!probabilities[data[i][key]] && data[i][key]) {
+                        let probability = data.filter((o) => o[key] == data[i][key]).length / data.length;
+                        probabilities[data[i][key]] = { probability, key };
+                    }
                 }
             }
         });
@@ -77,28 +183,68 @@ export default function GameScreen({ navigation, route }) {
     }
 
     function yesPressHandler() {
-        setData((prevData) => prevData.filter((item) => item[key] == value));
+        if (multiValueKeys.includes(key)) {
+            setData((prevData) =>
+                prevData.filter((item) => {
+                    let subs = item[key].split(', ');
+                    for (let i = 0; i < subs.length; i++) {
+                        if (subs.includes(value)) {
+                            return item;
+                        }
+                    }
+                })
+            );
+        } else {
+            setData((prevData) => prevData.filter((item) => item[key] == value));
+        }
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
         getPidAndQid(key.replace('Label', ''), value, 'yes');
     }
 
     function noPressHandler() {
-        setData((prevData) => prevData.filter((item) => item[key] != value));
+        if (multiValueKeys.includes(key)) {
+            setData((prevData) =>
+                prevData.filter((item) => {
+                    let subs = item[key].split(', ');
+                    for (let i = 0; i < subs.length; i++) {
+                        if (!subs.includes(value)) {
+                            return item;
+                        }
+                    }
+                })
+            );
+        } else {
+            setData((prevData) => prevData.filter((item) => item[key] != value));
+        }
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
         getPidAndQid(key.replace('Label', ''), value, 'no');
     }
 
     function dontKnowPressHandler() {
-        setData((prevData) => {
-            for (let i = 0; i < prevData.length; i++) {
-                if (prevData[i][key] == value) {
-                    prevData[i][key] = null;
+        if (multiValueKeys.includes(key)) {
+            setData((prevData) => {
+                for (let i = 0; i < prevData.length; i++) {
+                    // Split the multi value key to substrings
+                    let subs = prevData[i][key].split(', ');
+                    // Filter the desired value
+                    subs = subs.filter((s) => s != value);
+                    // Set the new multi value key as a string to the object
+                    prevData[i][key] = subs.join(', ');
                 }
-            }
-            return prevData;
-        });
+                return prevData;
+            });
+        } else {
+            setData((prevData) => {
+                for (let i = 0; i < prevData.length; i++) {
+                    if (prevData[i][key] == value) {
+                        prevData[i][key] = null;
+                    }
+                }
+                return prevData;
+            });
+        }
         setQuestionNum((prev) => prev + 1);
         setLastAnswer("don't know");
     }
@@ -135,7 +281,8 @@ export default function GameScreen({ navigation, route }) {
     }
 
     useEffect(() => {
-        queryBuilder();
+        //queryBuilder();
+        setData(miniData);
     }, []);
 
     // Delete all instances of a certain character that the app guessed wrong on GuessScreen
