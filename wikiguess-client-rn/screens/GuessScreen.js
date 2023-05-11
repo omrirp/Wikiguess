@@ -3,20 +3,45 @@ import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
+import axios from 'axios';
 
 export default function GuessScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
 
     useEffect(() => {
         // Need to fetch real Image from Wikipedia...
-        setImage(
-            <Image
-                source={{
-                    uri: route.params.imageUrl.replace('http', 'https'),
-                }}
-                style={styles.image}
-            />
-        );
+        // setImage(
+        //     <Image
+        //         source={{
+        //             uri: route.params.imageUrl.replace('http', 'https'),
+        //         }}
+        //         style={styles.image}
+        //     />
+        // );
+        axios
+            .get(
+                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${route.params.name}`
+            )
+            .then((res) => {
+                const keys = Object.keys(res.data.query.pages);
+                if (!res.data.query.pages[keys[0]].extract) {
+                    setImage('');
+                } else {
+                    setImage(
+                        <Image
+                            source={{
+                                uri: res.data.query.pages[keys[0]].original.source,
+                            }}
+                            style={styles.image}
+                        />
+                    );
+                }
+                // data = res.data;
+                // console.log(data.query.pages);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     return (
@@ -34,6 +59,7 @@ export default function GuessScreen({ route, navigation }) {
                                     result: 'correct',
                                     character: route.params.name,
                                     questionCount: route.params.questionCount,
+                                    gameObject: route.params.gameObject,
                                 });
                             }}
                         >

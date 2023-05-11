@@ -25,6 +25,9 @@ export default function GameOverScreen({ route, navigation }) {
     }
 
     useEffect(() => {
+        let gameObject = route.params.gameObject;
+        console.log(gameObject);
+
         async function getUserEmail() {
             let user = JSON.parse(await AsyncStorage.getItem('user'));
             setUserEmail(user.UserEmail);
@@ -56,7 +59,7 @@ export default function GameOverScreen({ route, navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <PrimaryButton onPress={endGamePressHandler}>
-                        Eng Game <Ionicons name='trophy-outline' size={20} />
+                        End Game <Ionicons name='trophy-outline' size={20} />
                     </PrimaryButton>
                 </View>
             </View>

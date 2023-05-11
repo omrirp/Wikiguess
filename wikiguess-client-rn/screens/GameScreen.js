@@ -6,6 +6,8 @@ import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
+import { tempQuery } from '../utils/query';
+
 const miniData = [
     {
         item: 'http://www.wikidata.org/entity/Q43723',
@@ -100,7 +102,7 @@ const miniData = [
     },
 ];
 
-const multiValueKeys = ['residence', 'occupation', 'country'];
+//const multiValueKeys = ['residence', 'occupation', 'country'];
 
 export default function GameScreen({ navigation, route }) {
     // Question counter
@@ -123,43 +125,44 @@ export default function GameScreen({ navigation, route }) {
     const [queryNots, setQueryNots] = useState('');
     // Set this to true when query to WikiData API in the middle of the game
     const [isQueried, setIsQueried] = useState(false);
+    // This object will contain the key/value pait of the questions that the user answers yes
+    const [gameObject, setGameObject] = useState({});
 
     // Decide what unique value to use for renderind the question
     function decision() {
         if (questionNum == limit) {
             setLimit((prevLimit) => prevLimit + 2);
-            navigation.navigate('GuessScreen', { name: data[0].itemLabel, imageUrl: data[0].imageLabel, questionCount: questionNum });
+            //imageUrl: data[0].imageLabel,
+            navigation.navigate('GuessScreen', { name: data[0].itemLabel, questionCount: questionNum, gameObject });
         }
 
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
-        keys = keys.filter((key) => key != 'itemLabel' && key != 'item' && key != 'articles' && key != 'imageLabel');
+        keys = keys.filter(
+            (key) => key != 'itemLabel' && key != 'item' && key != 'articles' && key != 'imageLabel' && key != 'dateOfBirth' && key != 'dateOfDeath'
+        );
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
             for (let i = 0; i < data.length; i++) {
-                // Check if the key is an array of values
-                if (multiValueKeys.includes(key)) {
+                // Check if the key is an array of values is valid
+                if (data[i][key]) {
                     let subs = data[i][key].split(', ');
                     // Calculate the probabilities of each unique value in the array
                     for (let j = 0; j < subs.length; j++) {
-                        if (!probabilities[subs[j]] && data[i][key]) {
+                        if (!probabilities[subs[j]]) {
                             let probability =
                                 data.filter((o) => {
-                                    let subsToCompare = o[key].split(', ');
-                                    if (subsToCompare.includes(subs[j])) {
-                                        return o;
-                                    }
+                                    try {
+                                        let subsToCompare = o[key].split(', ');
+                                        if (subsToCompare.includes(subs[j])) {
+                                            return o;
+                                        }
+                                    } catch (error) {}
                                 }).length / data.length;
                             probabilities[subs[j]] = { probability, key };
                         }
-                    }
-                } else {
-                    // Calculate the probability of the individual value
-                    if (!probabilities[data[i][key]] && data[i][key]) {
-                        let probability = data.filter((o) => o[key] == data[i][key]).length / data.length;
-                        probabilities[data[i][key]] = { probability, key };
                     }
                 }
             }
@@ -182,69 +185,64 @@ export default function GameScreen({ navigation, route }) {
         return toAsk;
     }
 
-    function yesPressHandler() {
-        if (multiValueKeys.includes(key)) {
-            setData((prevData) =>
-                prevData.filter((item) => {
-                    let subs = item[key].split(', ');
-                    for (let i = 0; i < subs.length; i++) {
-                        if (subs.includes(value)) {
-                            return item;
-                        }
-                    }
-                })
-            );
+    // Each "yes" answer store the key:value of the character in gameObject
+    function gameObjectHandler() {
+        if (!gameObject[key]) {
+            gameObject[key] = value;
         } else {
-            setData((prevData) => prevData.filter((item) => item[key] == value));
+            gameObject[key] += ', ' + value;
         }
+    }
+
+    function yesPressHandler() {
+        // Hanlde gameObject
+        gameObjectHandler();
+
+        setData((prevData) => {
+            let filteredData = prevData.filter((item) => {
+                let subs = item[key].split(', ');
+                for (let i = 0; i < subs.length; i++) {
+                    if (subs.includes(value)) {
+                        return item;
+                    }
+                }
+            });
+            return filteredData;
+        });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
         getPidAndQid(key.replace('Label', ''), value, 'yes');
     }
 
     function noPressHandler() {
-        if (multiValueKeys.includes(key)) {
-            setData((prevData) =>
-                prevData.filter((item) => {
-                    let subs = item[key].split(', ');
-                    for (let i = 0; i < subs.length; i++) {
-                        if (!subs.includes(value)) {
-                            return item;
-                        }
+        setData((prevData) => {
+            let filteredData = prevData.filter((item) => {
+                let subs = item[key].split(', ');
+                for (let i = 0; i < subs.length; i++) {
+                    if (!subs.includes(value)) {
+                        return item;
                     }
-                })
-            );
-        } else {
-            setData((prevData) => prevData.filter((item) => item[key] != value));
-        }
+                }
+            });
+            return filteredData;
+        });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
         getPidAndQid(key.replace('Label', ''), value, 'no');
     }
 
     function dontKnowPressHandler() {
-        if (multiValueKeys.includes(key)) {
-            setData((prevData) => {
-                for (let i = 0; i < prevData.length; i++) {
-                    // Split the multi value key to substrings
-                    let subs = prevData[i][key].split(', ');
-                    // Filter the desired value
-                    subs = subs.filter((s) => s != value);
-                    // Set the new multi value key as a string to the object
-                    prevData[i][key] = subs.join(', ');
-                }
-                return prevData;
-            });
-        } else {
-            setData((prevData) => {
-                for (let i = 0; i < prevData.length; i++) {
-                    if (prevData[i][key] == value) {
-                        prevData[i][key] = null;
-                    }
-                }
-                return prevData;
-            });
-        }
+        setData((prevData) => {
+            for (let i = 0; i < prevData.length; i++) {
+                // Split the multi value key to substrings
+                let subs = prevData[i][key].split(', ');
+                // Filter the desired value
+                subs = subs.filter((s) => s != value);
+                // Set the new multi value key as a string to the object
+                prevData[i][key] = subs.join(', ');
+            }
+            return prevData;
+        });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer("don't know");
     }
@@ -282,7 +280,7 @@ export default function GameScreen({ navigation, route }) {
 
     useEffect(() => {
         //queryBuilder();
-        setData(miniData);
+        setData(tempQuery);
     }, []);
 
     // Delete all instances of a certain character that the app guessed wrong on GuessScreen
