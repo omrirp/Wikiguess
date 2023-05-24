@@ -8,11 +8,19 @@ import axios from 'axios';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
 
 export default function GameOverScreen({ route, navigation }) {
+    // WikiMonster image
     const [image, setImage] = useState(<Text>Loading...</Text>);
+    // Results will contait different JSX code depends on the game outcome
     const [results, setResults] = useState(<Text>Loading...</Text>);
+    // Store the user email from asyncStorage
     const [userEmail, setUserEmail] = useState('');
+    // Input text expected a character name
     const [inputText, setInputText] = useState('');
+    // JSX code that will include a character name from Wikipedia and a button to confirm
     const [searchedCharacter, setSearchedCharacter] = useState('');
+    // gameObject will be sent to with the correct character name incase the program
+    // could not guess correctly the user's character
+    var gameObject = route.params.gameObject;
 
     function endGamePressHandler() {
         const stat = {
@@ -21,7 +29,6 @@ export default function GameOverScreen({ route, navigation }) {
             isCorrect: route.params.result == 'correct',
             Character: route.params.character ? route.params.character : '',
         };
-        console.log(stat);
         axios.post('http://proj.ruppin.ac.il/cgroup8/prod/api/playersgames/stats', stat).catch((error) => {
             console.log(error);
         });
@@ -72,6 +79,7 @@ export default function GameOverScreen({ route, navigation }) {
         setInputText(enteredText);
     }
 
+    // This JXS code will render in case the program could not guess correctly
     const search = (
         <View style={styles.searchContainer}>
             <View style={styles.textIputContainer}>
@@ -86,8 +94,6 @@ export default function GameOverScreen({ route, navigation }) {
     );
 
     useEffect(() => {
-        let gameObject = route.params.gameObject;
-
         async function getUserEmail() {
             let user = JSON.parse(await AsyncStorage.getItem('user'));
             setUserEmail(user.UserEmail);
@@ -144,7 +150,6 @@ const styles = StyleSheet.create({
         height: 300,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#de7c7c',
         // borderWidth: 1,
     },
     image: {
