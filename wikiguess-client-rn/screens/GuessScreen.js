@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function GuessScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
-
+    //console.log('gurss screen- ', route.params);
     useEffect(() => {
         // Need to fetch real Image from Wikipedia...
         // setImage(
@@ -69,7 +69,7 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
-                                navigation.navigate('GameScreen', { toDelete: route.params.name });
+                                navigation.navigate('GameScreen', { toDelete: route.params.name, gameObject: route.params.gameObject });
                             }}
                         >
                             No <Ionicons name='sad-outline' size={20} />
