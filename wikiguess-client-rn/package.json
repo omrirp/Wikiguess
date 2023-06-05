@@ -16,6 +16,7 @@
     "expo": "~47.0.12",
     "expo-linear-gradient": "~12.0.1",
     "expo-status-bar": "~1.4.2",
+    "firebase": "^9.22.1",
     "react": "18.1.0",
     "react-native": "^0.70.8",
     "react-native-elements": "^3.4.3",

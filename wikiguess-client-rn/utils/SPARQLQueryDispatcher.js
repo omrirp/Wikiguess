@@ -1,5 +1,5 @@
 export default class SPARQLQueryDispatcher {
-    constructor(additions = '', nots = '') {
+    constructor(additions = '', optionals = '') {
         this.endpoint = `SELECT distinct ?item ?itemLabel ?genderLabel ?occupationLabel ?imageLabel ?militaryRankLabel
         ?countryLabel ?death ?articles ?dateOfBirth 
         ?residenceLabel ?militaryUnitLabel
@@ -18,7 +18,7 @@ export default class SPARQLQueryDispatcher {
             wdt:P551 ?residence;
             wikibase:sitelinks ?articles . 
         # Add here all the not properties => MINUS {?item wdt:P wd:Q}
-        ${nots}
+        ${optionals}
         
         optional{?item wdt:P570 ?death.}
         optional{?item wdt:P7779 ?militaryUnit.}

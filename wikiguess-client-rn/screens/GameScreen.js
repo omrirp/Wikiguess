@@ -7,6 +7,7 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
 import { tempQuery } from '../utils/query';
+import getAllCharacters from '../utils/firebaseHandler';
 
 const miniData = [
     {
@@ -127,6 +128,8 @@ export default function GameScreen({ navigation, route }) {
     const [isQueried, setIsQueried] = useState(false);
     // This object will contain the key/value pait of the questions that the user answers yes
     const [gameObject, setGameObject] = useState({});
+
+    const [dataFromFirebase, setDataFromFirebase] = useState();
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -271,15 +274,26 @@ export default function GameScreen({ navigation, route }) {
         }
     }
 
-    function queryBuilder(additions = '', notAdditions = '') {
-        const queryDispatcher = new SPARQLQueryDispatcher(additions, notAdditions);
+    function queryBuilder(additions = '', optionals = '') {
+        const queryDispatcher = new SPARQLQueryDispatcher(additions, optionals);
         queryDispatcher.query().then((results) => {
             setData(results);
         });
     }
 
+    async function fetchDataFromFirebase() {
+        try {
+            const data = await getAllCharacters();
+            setDataFromFirebase(data);
+            //return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         //queryBuilder();
+        fetchDataFromFirebase();
         setData(tempQuery);
     }, []);
 
@@ -298,7 +312,7 @@ export default function GameScreen({ navigation, route }) {
         if (!data) {
             return;
         }
-
+        //console.log('in game screen: ', dataFromFirebase);
         try {
             let [decidedKey, decidedValue] = decision();
             setKey(decidedKey);
