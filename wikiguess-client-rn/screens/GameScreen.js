@@ -6,7 +6,7 @@ import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
-import { tempQuery } from '../utils/query';
+//import { tempQuery } from '../utils/query';
 import getAllCharacters from '../utils/firebaseHandler';
 
 const miniData = [
@@ -284,17 +284,25 @@ export default function GameScreen({ navigation, route }) {
     async function fetchDataFromFirebase() {
         try {
             const data = await getAllCharacters();
-            setDataFromFirebase(data);
+            setData(data);
             //return data;
         } catch (error) {
             console.error(error);
         }
     }
 
+    function updateKeyFormat(str) {
+        // Erase the 'Label' string from the key
+        str = str.replace('Label', '');
+        // Replace all uppercase characters with space and lower case characters
+        str = str.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`);
+        return str;
+    }
+
     useEffect(() => {
         //queryBuilder();
         fetchDataFromFirebase();
-        setData(tempQuery);
+        //setData(tempQuery);
     }, []);
 
     // Delete all instances of a certain character that the app guessed wrong on GuessScreen
@@ -312,12 +320,12 @@ export default function GameScreen({ navigation, route }) {
         if (!data) {
             return;
         }
-        //console.log('in game screen: ', dataFromFirebase);
+
         try {
             let [decidedKey, decidedValue] = decision();
             setKey(decidedKey);
             setValue(decidedValue);
-            setQuestion("is your character's " + (key ? key.replace('Label', '') : '') + ' is ' + value + '?');
+            setQuestion("is your character's " + (key ? updateKeyFormat(key) : '') + ' is ' + value + '?');
         } catch (error) {
             // Catch block will run when data will be empty
             if (!isQueried) {
