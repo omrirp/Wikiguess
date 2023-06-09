@@ -129,7 +129,7 @@ export default function GameScreen({ navigation, route }) {
     // This object will contain the key/value pait of the questions that the user answers yes
     const [gameObject, setGameObject] = useState({});
 
-    const [dataFromFirebase, setDataFromFirebase] = useState();
+    const [globalKeys, setGlobalKeys] = useState([]);
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -190,11 +190,14 @@ export default function GameScreen({ navigation, route }) {
 
     // Each "yes" answer store the key:value of the character in gameObject
     function gameObjectHandler() {
-        if (!gameObject[key]) {
-            gameObject[key] = value;
-        } else {
-            gameObject[key] += ', ' + value;
-        }
+        setGameObject((prevGameObject) => {
+            if (!prevGameObject[key]) {
+                prevGameObject[key] = value;
+            } else {
+                prevGameObject[key] += ', ' + value;
+            }
+            return prevGameObject;
+        });
     }
 
     function yesPressHandler() {
@@ -214,7 +217,7 @@ export default function GameScreen({ navigation, route }) {
         });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
-        getPidAndQid(key.replace('Label', ''), value, 'yes');
+        getPidAndQid(updateKeyFormat(key), value, 'yes');
     }
 
     function noPressHandler() {
@@ -231,7 +234,7 @@ export default function GameScreen({ navigation, route }) {
         });
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
-        getPidAndQid(key.replace('Label', ''), value, 'no');
+        getPidAndQid(updateKeyFormat(key), value, 'no');
     }
 
     function dontKnowPressHandler() {
@@ -274,8 +277,8 @@ export default function GameScreen({ navigation, route }) {
         }
     }
 
-    function queryBuilder(additions = '', optionals = '') {
-        const queryDispatcher = new SPARQLQueryDispatcher(additions, optionals);
+    function queryBuilder(additions = '', minuses = '') {
+        const queryDispatcher = new SPARQLQueryDispatcher(additions, minuses);
         queryDispatcher.query().then((results) => {
             setData(results);
         });
@@ -283,9 +286,22 @@ export default function GameScreen({ navigation, route }) {
 
     async function fetchDataFromFirebase() {
         try {
-            const data = await getAllCharacters();
-            setData(data);
-            //return data;
+            const dataFromFB = await getAllCharacters();
+            setData(dataFromFB);
+            // For some reason if the function returns the data the array of objects will be
+            // inside of another object, right now this is the way to fetch the data witout issues
+
+            // Generate global Keys
+            let res = [];
+            for (let i = 0; i < dataFromFB.length; i++) {
+                let objKeys = Object.keys(dataFromFB[i]);
+                objKeys.forEach((key) => {
+                    if (!res.includes(key)) {
+                        res.push(key);
+                    }
+                });
+            }
+            //await setGlobalKeys(res);
         } catch (error) {
             console.error(error);
         }

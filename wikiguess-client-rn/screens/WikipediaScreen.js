@@ -25,8 +25,8 @@ export default function WikipediaScreen() {
             .then((res) => {
                 const keys = Object.keys(res.data.query.pages);
                 setHeader(res.data.query.pages[keys[0]].title);
-                if (!res.data.query.pages[keys[0]].extract) {
-                    setContent('Please Ceck your spelling about ' + res.data.query.pages[keys[0]].title);
+                if (!res.data.query.pages[keys[0]].original) {
+                    setContent('Could not find a Wikipedia article. Please try inserting full name or check misspells.');
                     setImage('');
                 } else {
                     setContent(res.data.query.pages[keys[0]].extract);

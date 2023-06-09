@@ -1,5 +1,5 @@
 export default class SPARQLQueryDispatcher {
-    constructor(additions = '', optionals = '') {
+    constructor(additions = '', minuses = '') {
         this.endpoint = `SELECT distinct ?item ?itemLabel ?genderLabel ?occupationLabel ?imageLabel ?militaryRankLabel
         ?countryLabel ?death ?articles ?dateOfBirth 
         ?residenceLabel ?militaryUnitLabel
@@ -18,7 +18,7 @@ export default class SPARQLQueryDispatcher {
             wdt:P551 ?residence;
             wikibase:sitelinks ?articles . 
         # Add here all the not properties => MINUS {?item wdt:P wd:Q}
-        ${optionals}
+        ${minuses}
         
         optional{?item wdt:P570 ?death.}
         optional{?item wdt:P7779 ?militaryUnit.}
@@ -94,5 +94,5 @@ bd:serviceParam wikibase:language "en" .
 } .
 } ORDER BY DESC (?articles)`;
 
-const queryDispatcher = new SPARQLQueryDispatcher(endpointUrl);
-queryDispatcher.query(sparqlQuery).then((results) => setData(results));
+// const queryDispatcher = new SPARQLQueryDispatcher(endpointUrl);
+// queryDispatcher.query(sparqlQuery).then((results) => setData(results));

@@ -24,7 +24,7 @@ export default function GuessScreen({ route, navigation }) {
             )
             .then((res) => {
                 const keys = Object.keys(res.data.query.pages);
-                if (!res.data.query.pages[keys[0]].extract) {
+                if (!res.data.query.pages[keys[0]].original) {
                     setImage('');
                 } else {
                     setImage(
