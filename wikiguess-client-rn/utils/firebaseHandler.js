@@ -1,7 +1,7 @@
 import { apiKey, appId } from './protectedData';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue, push } from 'firebase/database';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,8 +20,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 const charactersRef = ref(db, '/characters');
+const gameObjectsRef = ref(db, '/gameObjects');
 
-export default function getAllCharacters() {
+export function getAllCharacters() {
     return new Promise((resolve, reject) => {
         onValue(charactersRef, (snapshot) => {
             const data = snapshot.val();
@@ -34,4 +35,9 @@ export default function getAllCharacters() {
             }
         });
     });
+}
+
+export function postGameObject(gameObject) {
+    const gameObjectsRef = ref(db, 'gameObjects');
+    push(gameObjectsRef, gameObject);
 }

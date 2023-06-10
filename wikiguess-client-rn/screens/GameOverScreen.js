@@ -6,6 +6,7 @@ import GradientBackground from '../components/ui/GradientBackground';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import PrimaryTextInput from '../components/ui/PrimaryTextInput';
+import { postGameObject } from '../utils/firebaseHandler';
 
 export default function GameOverScreen({ route, navigation }) {
     // WikiMonster image
@@ -71,8 +72,18 @@ export default function GameOverScreen({ route, navigation }) {
     }
 
     function sentCharacterHandler(characterName) {
-        console.log(characterName);
-        // Need to send to DB
+        gameObject.item = characterName;
+
+        // Post the gameObject to Firebase
+        try {
+            postGameObject(gameObject);
+        } catch (error) {
+            console.log(error);
+        }
+
+        // Thanking the user for the information
+        setResults(<Text style={styles.text}>Thank you !!!</Text>);
+        setImage(<Image source={require('../assets/images/wikimonsterHappy.png')} style={styles.image} />);
     }
 
     function inputTextHandler(enteredText) {
@@ -112,7 +123,9 @@ export default function GameOverScreen({ route, navigation }) {
                 // render this JSX code to ask the user about his thinking
                 setResults(
                     <>
-                        <Text style={{ fontSize: 20, textAlign: 'center' }}>I'm sorry. Can you please tell me who you were thinking of?</Text>
+                        <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                            I'm sorry. Can you please tell me who you were thinking of?
+                        </Text>
                         {search}
                         {searchedCharacter}
                     </>
@@ -157,13 +170,13 @@ const styles = StyleSheet.create({
         width: 400,
     },
     buttonContainer: {
-        marginVertical: 20,
+        marginBottom: 20,
         marginHorizontal: 36,
     },
     resultContainer: {
         //alignItems: 'center',
         width: '100%',
-        marginVertical: 100,
+        marginVertical: 85,
         justifyContent: 'center',
         textAlign: 'center',
     },
