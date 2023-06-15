@@ -7,7 +7,7 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
 //import { tempQuery } from '../utils/query';
-import getAllCharacters from '../utils/firebaseHandler';
+import { getAllCharacters } from '../utils/firebaseHandler';
 
 const miniData = [
     {
@@ -136,14 +136,24 @@ export default function GameScreen({ navigation, route }) {
         if (questionNum == limit) {
             setLimit((prevLimit) => prevLimit + 2);
             //imageUrl: data[0].imageLabel,
-            navigation.navigate('GuessScreen', { name: data[0].itemLabel, questionCount: questionNum, gameObject: gameObject });
+            navigation.navigate('GuessScreen', {
+                name: data[0].itemLabel,
+                questionCount: questionNum,
+                gameObject: gameObject,
+            });
         }
 
         let probabilities = {};
         // Asumeing all object have the same attributes
         let keys = Object.keys(data[0]);
         keys = keys.filter(
-            (key) => key != 'itemLabel' && key != 'item' && key != 'articles' && key != 'imageLabel' && key != 'dateOfBirth' && key != 'dateOfDeath'
+            (key) =>
+                key != 'itemLabel' &&
+                key != 'item' &&
+                key != 'articles' &&
+                key != 'imageLabel' &&
+                key != 'dateOfBirth' &&
+                key != 'dateOfDeath'
         );
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
@@ -191,10 +201,11 @@ export default function GameScreen({ navigation, route }) {
     // Each "yes" answer store the key:value of the character in gameObject
     function gameObjectHandler() {
         setGameObject((prevGameObject) => {
-            if (!prevGameObject[key]) {
-                prevGameObject[key] = value;
+            let ketStr = updateKeyFormat(key);
+            if (!prevGameObject[ketStr]) {
+                prevGameObject[ketStr] = value;
             } else {
-                prevGameObject[key] += ', ' + value;
+                prevGameObject[ketStr] += ', ' + value;
             }
             return prevGameObject;
         });
@@ -351,7 +362,11 @@ export default function GameScreen({ navigation, route }) {
                 //queryBuilder(queryAdds, queryNots);
                 setIsQueried(true);
             } else {
-                navigation.navigate('GameOverScreen', { result: 'incorrect', questionCount: questionNum, gameObject: gameObject });
+                navigation.navigate('GameOverScreen', {
+                    result: 'incorrect',
+                    questionCount: questionNum,
+                    gameObject: gameObject,
+                });
             }
         }
     }, [data, key, value, questionNum]);
