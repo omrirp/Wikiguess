@@ -12,10 +12,26 @@ import GameOverScreen from './screens/GameOverScreen';
 import HowToPlayScreen from './screens/HowToPlayScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 import WikipediaScreen from './screens/WikipediaScreen';
+import axios from 'axios';
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+    const [fontsLoaded] = useFonts({
+        'nasalization-rg': require('./assets/fonts/nasalization-rg.ttf'),
+        'happymonkey-regular': require('./assets/fonts/HappyMonkey-Regular.ttf'),
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+    });
+
+    if (!fontsLoaded) {
+        console.log('loading fonts');
+        return null;
+    }
+
+    // Wakeing up Node.JS server in Render.com
+    axios.get('https://wikiguess-node-server.onrender.com/wakeup');
+
     const wikiDataImg = (
         <View style={styles.imageContainer}>
             <Image source={require('./assets/images/Wikidata-logo.svg.png')} style={styles.image} />
@@ -60,7 +76,7 @@ export default function App() {
                         name='SignUpScreen'
                         component={SignUpScreen}
                         options={{
-                            title: 'Sing up',
+                            title: 'Sign up',
                         }}
                     />
                     <Stack.Screen
@@ -131,5 +147,8 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    text: {
+        fontFamily: 'Arial', // Replace 'Arial' with the desired font family
     },
 });

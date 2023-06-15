@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontWeight: 'bold',
         fontSize: 55,
+        fontFamily: 'nasalization-rg',
     },
     headerView: {
         flex: 1,
