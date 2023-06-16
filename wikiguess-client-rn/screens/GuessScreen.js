@@ -7,20 +7,36 @@ import axios from 'axios';
 
 export default function GuessScreen({ route, navigation }) {
     const [image, setImage] = useState(<Text>Loading...</Text>);
+    const [characterName, setCharacterName] = useState(<Text>Loading...</Text>);
     //console.log('gurss screen- ', route.params);
     useEffect(() => {
-        // Need to fetch real Image from Wikipedia...
-        // setImage(
-        //     <Image
-        //         source={{
-        //             uri: route.params.imageUrl.replace('http', 'https'),
-        //         }}
-        //         style={styles.image}
-        //     />
-        // );
+        // Call Majority Vote if this component did not recived a name to guess
+        if (!route.params.name) {
+            callMajorityVote(route.params.gameObject);
+        } else {
+            guessHandler(route.params.name);
+        }
+    }, []);
+
+    async function callMajorityVote(gameObject) {
+        const res = await axios.post('https://wikiguess-node-server.onrender.com/majorityvote', gameObject);
+        let name = res.data.name;
+
+        if (!name) {
+            navigation.navigate('GameOverScreen', {
+                result: 'incorrect',
+                questionCount: route.params.questionCount,
+                gameObject: gameObject,
+            });
+        }
+
+        guessHandler(name);
+    }
+
+    function guessHandler(name) {
         axios
             .get(
-                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${route.params.name}`
+                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${name}`
             )
             .then((res) => {
                 const keys = Object.keys(res.data.query.pages);
@@ -36,20 +52,21 @@ export default function GuessScreen({ route, navigation }) {
                         />
                     );
                 }
+                setCharacterName(name);
                 // data = res.data;
                 // console.log(data.query.pages);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }
 
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
                 <View style={styles.ImageContainer}>{image}</View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>Thinking about {route.params.name}?</Text>
+                    <Text style={styles.text}>Thinking about {characterName}?</Text>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.buttonContainer}>
@@ -69,7 +86,11 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
-                                navigation.navigate('GameScreen', { toDelete: route.params.name, gameObject: route.params.gameObject });
+                                delete route.params.name;
+                                navigation.navigate('GameScreen', {
+                                    toDelete: route.params.name,
+                                    gameObject: route.params.gameObject,
+                                });
                             }}
                         >
                             No <Ionicons name='sad-outline' size={20} />

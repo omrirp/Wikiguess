@@ -25,7 +25,6 @@ export default function App() {
     });
 
     if (!fontsLoaded) {
-        console.log('loading fonts');
         return null;
     }
 

@@ -16,10 +16,10 @@ export default function PrimaryTextInput({ placeholder, onChangeText, secureText
 
 const styles = StyleSheet.create({
     input: {
-        borderWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'white',
-        borderRadius: 4,
+        borderWidth: 2,
+        borderColor: '#0e7490',
+        backgroundColor: '#f5f5f5',
+        borderRadius: 14,
         height: 50,
         margin: 4,
         fontSize: 20,
