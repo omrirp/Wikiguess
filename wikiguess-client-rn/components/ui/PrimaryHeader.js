@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function PrimaryHeader({ children, textStyle, viewStyle }) {
     return (
@@ -16,6 +15,5 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 36,
-        fontWeight: 'bold',
     },
 });

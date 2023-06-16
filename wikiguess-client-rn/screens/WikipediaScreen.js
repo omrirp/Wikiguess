@@ -26,7 +26,9 @@ export default function WikipediaScreen() {
                 const keys = Object.keys(res.data.query.pages);
                 setHeader(res.data.query.pages[keys[0]].title);
                 if (!res.data.query.pages[keys[0]].original) {
-                    setContent('Could not find a Wikipedia article. Please try inserting full name or check misspells.');
+                    setContent(
+                        'Could not find a Wikipedia article. Please try inserting full name or check misspells.'
+                    );
                     setImage('');
                 } else {
                     setContent(res.data.query.pages[keys[0]].extract);
@@ -62,8 +64,8 @@ export default function WikipediaScreen() {
                 </View>
                 <View style={styles.infoContainer}>
                     <View style={styles.ImageContainer}>{image}</View>
-                    <PrimaryHeader>{header}</PrimaryHeader>
-                    <Text>{content}</Text>
+                    <PrimaryHeader textStyle={styles.headerText}>{header}</PrimaryHeader>
+                    <Text style={styles.contentText}>{content}</Text>
                 </View>
             </ScrollView>
         </GradientBackground>
@@ -100,5 +102,11 @@ const styles = StyleSheet.create({
     infoContainer: {
         alignItems: 'center',
         marginHorizontal: 8,
+    },
+    headerText: {
+        fontFamily: 'Fredoka-SemiBold',
+    },
+    contentText: {
+        fontFamily: 'Fredoka-Light',
     },
 });

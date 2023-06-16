@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: '#2f9a69',
         marginBottom: 8,
-        fontWeight: 'bold',
+        fontFamily: 'Fredoka-SemiBold',
     },
 });

@@ -72,11 +72,20 @@ export default function LogInScreen({ navigation }) {
             <ScrollView style={styles.rootContainer}>
                 <KeyboardAvoidingView style={styles.rootContainer} behavior='position'>
                     <View style={styles.rootContainer}>
-                        <PrimaryHeader>Log In</PrimaryHeader>
+                        <PrimaryHeader textStyle={styles.headerText}>Log In</PrimaryHeader>
                         <View style={styles.inputsContainer}>
                             {invalidEorP}
-                            <PrimaryTextInput placeholder={'Email'} onChangeText={useEmailTextHanler} value={emailText} />
-                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} value={passwordText} />
+                            <PrimaryTextInput
+                                placeholder={'Email'}
+                                onChangeText={useEmailTextHanler}
+                                value={emailText}
+                            />
+                            <PrimaryTextInput
+                                placeholder={'Password'}
+                                onChangeText={passwordTextHandler}
+                                secureTextEntry={true}
+                                value={passwordText}
+                            />
                             <CheckBox
                                 title='Remember me'
                                 checked={toggleCheckBox}
@@ -84,6 +93,7 @@ export default function LogInScreen({ navigation }) {
                                 containerStyle={{ backgroundColor: 'none', borderWidth: 0 }}
                                 checkedColor='#0e7490'
                                 uncheckedColor='black'
+                                //textStyle={{ fontFamily: 'Fredoka-SemiBold' }}
                             />
                         </View>
                         <View style={styles.buttonContainer}>
@@ -113,5 +123,8 @@ const styles = StyleSheet.create({
     },
     footerContainer: {
         marginTop: 100,
+    },
+    headerText: {
+        fontFamily: 'Fredoka-SemiBold',
     },
 });

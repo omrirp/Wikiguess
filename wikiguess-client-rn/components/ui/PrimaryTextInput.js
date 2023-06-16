@@ -24,5 +24,6 @@ const styles = StyleSheet.create({
         margin: 4,
         fontSize: 20,
         padding: 4,
+        fontFamily: 'Fredoka-Regular',
     },
 });

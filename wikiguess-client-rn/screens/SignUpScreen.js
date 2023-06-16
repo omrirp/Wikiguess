@@ -37,13 +37,13 @@ export default function SignUpScreen({ navigation }) {
     function signUpPressHandler() {
         // Check if the text is a valid email adress
         if (!isEmail(emailText)) {
-            setInvalidEmail(<Text style={{ color: '#9a0000' }}>* Invalid email adress</Text>);
+            setInvalidEmail(<Text style={styles.warrning}>* Invalid email adress</Text>);
             return;
         }
 
         // Check if password confirmed
         if (passwordText !== passwordConText) {
-            setPasswordMissmatch(<Text style={{ color: '#9a0000' }}>* Please check your confirmed password</Text>);
+            setPasswordMissmatch(<Text style={styles.warrning}>* Please check your confirmed password</Text>);
             return;
         }
 
@@ -60,7 +60,11 @@ export default function SignUpScreen({ navigation }) {
                 navigation.navigate('MainMenuScreen');
             })
             .catch((error) => {
-                setErrorText(<Text style={{ color: '#9a0000' }}>* Something went wrong while signing up. Please check your internet connection</Text>);
+                setErrorText(
+                    <Text style={styles.warrning}>
+                        * Something went wrong while signing up. Please check your internet connection
+                    </Text>
+                );
             });
         //navigation.navigate('MainMenuScreen');
     }
@@ -74,14 +78,22 @@ export default function SignUpScreen({ navigation }) {
             <ScrollView style={styles.screen}>
                 <KeyboardAvoidingView style={styles.screen} behavior='position'>
                     <View style={styles.rootContainer}>
-                        <PrimaryHeader>Sign Up</PrimaryHeader>
+                        <PrimaryHeader textStyle={styles.headerText}>Sign Up</PrimaryHeader>
                         <View style={styles.inputesContainer}>
                             {invalidEmail}
                             <PrimaryTextInput placeholder={'Email Adress'} onChangeText={emailInputHandler} />
                             <PrimaryTextInput placeholder={'User Name'} onChangeText={userNameTextHandler} />
                             {passwordMissmatch}
-                            <PrimaryTextInput placeholder={'Password'} onChangeText={passwordTextHandler} secureTextEntry={true} />
-                            <PrimaryTextInput placeholder={'Confirm Password'} onChangeText={passwordConTextHandler} secureTextEntry={true} />
+                            <PrimaryTextInput
+                                placeholder={'Password'}
+                                onChangeText={passwordTextHandler}
+                                secureTextEntry={true}
+                            />
+                            <PrimaryTextInput
+                                placeholder={'Confirm Password'}
+                                onChangeText={passwordConTextHandler}
+                                secureTextEntry={true}
+                            />
                             {errorText}
                         </View>
                         <View style={styles.buttonContainer}>
@@ -114,5 +126,12 @@ const styles = StyleSheet.create({
     },
     footerContainer: {
         marginTop: 40,
+    },
+    headerText: {
+        fontFamily: 'Fredoka-SemiBold',
+    },
+    warrning: {
+        fontFamily: 'Fredoka-Light',
+        color: '#9a0000',
     },
 });

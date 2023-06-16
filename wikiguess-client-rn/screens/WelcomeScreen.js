@@ -50,9 +50,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerText: {
-        fontWeight: 'bold',
         fontSize: 55,
-        fontFamily: 'nasalization-rg',
+        fontFamily: 'Fredoka-SemiBold',
     },
     headerView: {
         flex: 1,

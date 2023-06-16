@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 30,
         color: 'white',
+        fontFamily: 'Fredoka-Regular',
     },
     questionNum: {
         fontWeight: 'bold',

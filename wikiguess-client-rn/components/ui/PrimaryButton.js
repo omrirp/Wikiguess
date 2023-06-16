@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontSize: 20,
-        fontWeight: 'bold',
-        fontFamily: 'open-sans-bold',
+        fontFamily: 'Fredoka-SemiBold',
     },
     pressed: {
         opacity: 0.75,

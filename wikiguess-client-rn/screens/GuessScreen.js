@@ -10,6 +10,8 @@ export default function GuessScreen({ route, navigation }) {
     const [characterName, setCharacterName] = useState(<Text>Loading...</Text>);
     //console.log('gurss screen- ', route.params);
     useEffect(() => {
+        
+
         // Call Majority Vote if this component did not recived a name to guess
         if (!route.params.name) {
             callMajorityVote(route.params.gameObject);
@@ -32,7 +34,7 @@ export default function GuessScreen({ route, navigation }) {
 
         guessHandler(name);
     }
-
+    
     function guessHandler(name) {
         axios
             .get(
@@ -51,8 +53,8 @@ export default function GuessScreen({ route, navigation }) {
                             style={styles.image}
                         />
                     );
+                    setCharacterName(name);
                 }
-                setCharacterName(name);
                 // data = res.data;
                 // console.log(data.query.pages);
             })
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 30,
         textAlign: 'center',
+        fontFamily: 'Fredoka-Regular',
     },
     buttonsContainer: {
         flex: 1,

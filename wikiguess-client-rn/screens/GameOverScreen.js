@@ -123,7 +123,7 @@ export default function GameOverScreen({ route, navigation }) {
                 // render this JSX code to ask the user about his thinking
                 setResults(
                     <>
-                        <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                        <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: 'Fredoka-Light' }}>
                             I'm sorry. Can you please tell me who you were thinking of?
                         </Text>
                         {search}
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 30,
         textAlign: 'center',
+        fontFamily: 'Fredoka-Regular',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -203,5 +204,6 @@ const styles = StyleSheet.create({
     characterText: {
         fontSize: 30,
         textAlign: 'center',
+        fontFamily: 'Fredoka-Regular',
     },
 });

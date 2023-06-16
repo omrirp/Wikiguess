@@ -38,7 +38,7 @@ export default function MainMenuScreen({ navigation }) {
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
-                <PrimaryHeader>
+                <PrimaryHeader textStyle={styles.headerText}>
                     <Text style={{ color: '#9a0000' }}>We</Text>
                     <Text style={{ color: '#2f9a69' }}>lc</Text>
                     <Text style={{ color: '#00649c' }}>om</Text>
@@ -101,5 +101,8 @@ const styles = StyleSheet.create({
         height: '25%',
         paddingBottom: 30,
         justifyContent: 'flex-end',
+    },
+    headerText: {
+        fontFamily: 'Fredoka-SemiBold',
     },
 });

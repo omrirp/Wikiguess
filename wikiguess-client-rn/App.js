@@ -19,9 +19,9 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
-        'nasalization-rg': require('./assets/fonts/nasalization-rg.ttf'),
-        'happymonkey-regular': require('./assets/fonts/HappyMonkey-Regular.ttf'),
-        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        'Fredoka-Light': require('./assets/fonts/Fredoka-Light.ttf'),
+        'Fredoka-Regular': require('./assets/fonts/Fredoka-Regular.ttf'),
+        'Fredoka-SemiBold': require('./assets/fonts/Fredoka-SemiBold.ttf'),
     });
 
     if (!fontsLoaded) {

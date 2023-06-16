@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     statText: {
         fontSize: 25,
-        fontWeight: 'bold',
+        fontFamily: 'Fredoka-SemiBold',
     },
     barContainer: {
         borderRadius: 16,
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
         marginVertical: 16,
         fontSize: 25,
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontFamily: 'Fredoka-SemiBold',
     },
 });

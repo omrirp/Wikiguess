@@ -11,7 +11,7 @@ export default function SecondaryButton({ children, onPress }) {
 const styles = StyleSheet.create({
     text: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'Fredoka-SemiBold',
         color: '#0284c7',
         textAlign: 'center',
         textDecorationLine: 'underline',

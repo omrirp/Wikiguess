@@ -8,7 +8,8 @@ export default function globStatItem({ character, avgQuestionCount }) {
             </View>
             <View style={styles.textItem}>
                 <Text style={styles.questionCountText}>
-                    {'\u2023'} AVG number of questions- <Text style={{ color: '#9a0000', fontWeight: 'bold' }}>{avgQuestionCount}</Text>
+                    {'\u2023'} AVG number of questions-{' '}
+                    <Text style={{ color: '#9a0000', fontFamily: 'Fredoka-SemiBold' }}>{avgQuestionCount}</Text>
                 </Text>
             </View>
         </View>
@@ -30,10 +31,11 @@ const styles = StyleSheet.create({
         fontSize: 21,
         marginBottom: 5,
         color: '#00649c',
-        fontWeight: 'bold',
+        fontFamily: 'Fredoka-SemiBold',
     },
     questionCountText: {
         fontSize: 18,
+        fontFamily: 'Fredoka-Regular',
     },
     textItem: {
         flex: 1,
