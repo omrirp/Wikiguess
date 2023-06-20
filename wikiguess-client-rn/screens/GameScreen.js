@@ -8,19 +8,21 @@ import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
 import { getAllCharacters } from '../utils/firebaseHandler';
 
-//const multiValueKeys = ['residence', 'occupation', 'country'];
 const allKeys = [
+    'academinDegree',
     'age',
     'countryOfCitizenship',
     'dateOfBirth',
-    'dateOfDeath',
-    'deathAge',
     'ethnicGroup',
-    'fieldOfWork',
     'genderLabel',
-    'genre',
+    'itemLabel',
     'occupation',
     'residence',
+    'dateOfDeath',
+    'fieldOfWork',
+    'genre',
+    'eyeColor',
+    'hairColor',
 ];
 
 export default function GameScreen({ navigation, route }) {
@@ -63,15 +65,7 @@ export default function GameScreen({ navigation, route }) {
         let probabilities = {};
 
         let keys = allKeys;
-        keys = keys.filter(
-            (key) =>
-                key != 'itemLabel' &&
-                key != 'item' &&
-                key != 'articles' &&
-                key != 'imageLabel' &&
-                key != 'dateOfBirth' &&
-                key != 'dateOfDeath'
-        );
+
         // Iterating on every key (column) in the data
         keys.forEach((key) => {
             // Find the probabilities for each of the unique value in the data
@@ -135,6 +129,9 @@ export default function GameScreen({ navigation, route }) {
         setData((prevData) => {
             try {
                 let filteredData = prevData.filter((item) => {
+                    if (!item[key]) {
+                        return item;
+                    }
                     let subs = item[key].split(', ');
                     for (let i = 0; i < subs.length; i++) {
                         if (subs.includes(value)) {
@@ -159,6 +156,9 @@ export default function GameScreen({ navigation, route }) {
         setData((prevData) => {
             try {
                 let filteredData = prevData.filter((item) => {
+                    if (!item[key]) {
+                        return item;
+                    }
                     let subs = item[key].split(', ');
                     for (let i = 0; i < subs.length; i++) {
                         if (!subs.includes(value)) {
@@ -183,12 +183,14 @@ export default function GameScreen({ navigation, route }) {
         setData((prevData) => {
             try {
                 for (let i = 0; i < prevData.length; i++) {
-                    // Split the multi value key to substrings
-                    let subs = prevData[i][key].split(', ');
-                    // Filter the desired value
-                    subs = subs.filter((s) => s != value);
-                    // Set the new multi value key as a string to the object
-                    prevData[i][key] = subs.join(', ');
+                    if (prevData[i][key]) {
+                        // Split the multi value key to substrings
+                        let subs = prevData[i][key].split(', ');
+                        // Filter the desired value
+                        subs = subs.filter((s) => s != value);
+                        // Set the new multi value key as a string to the object
+                        prevData[i][key] = subs.join(', ');
+                    }
                 }
                 return prevData;
             } catch (error) {
@@ -285,7 +287,7 @@ export default function GameScreen({ navigation, route }) {
         if (!data) {
             return;
         }
-
+        console.log(data.length);
         // Use this to get all keys hardcoded
         // let res = [];
         // for (let i = 0; i < data.length; i++) {

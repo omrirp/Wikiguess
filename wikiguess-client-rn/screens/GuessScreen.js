@@ -10,8 +10,6 @@ export default function GuessScreen({ route, navigation }) {
     const [characterName, setCharacterName] = useState(<Text>Loading...</Text>);
     //console.log('gurss screen- ', route.params);
     useEffect(() => {
-        
-
         // Call Majority Vote if this component did not recived a name to guess
         if (!route.params.name) {
             callMajorityVote(route.params.gameObject);
@@ -34,7 +32,7 @@ export default function GuessScreen({ route, navigation }) {
 
         guessHandler(name);
     }
-    
+
     function guessHandler(name) {
         axios
             .get(
@@ -88,9 +86,10 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
+                                const name = route.params.name;
                                 delete route.params.name;
                                 navigation.navigate('GameScreen', {
-                                    toDelete: route.params.name,
+                                    toDelete: name,
                                     gameObject: route.params.gameObject,
                                 });
                             }}
