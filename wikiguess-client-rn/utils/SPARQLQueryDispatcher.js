@@ -89,6 +89,15 @@ export default class SPARQLQueryDispatcher {
                 return result;
             });
 
+        // Update dateOfDeath to 1 or 0
+        results = results.map((character) => {
+            if (character.dateOfDeath) {
+                character.dateOfDeath = '1';
+            } else {
+                character.dateOfDeath = '0';
+            }
+            return character;
+        });
         return results;
     }
 }

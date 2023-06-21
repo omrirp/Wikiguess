@@ -11,9 +11,7 @@ import { getAllCharacters } from '../utils/firebaseHandler';
 
 const allKeys = [
     'academinDegree',
-    'age',
     'countryOfCitizenship',
-    'dateOfBirth',
     'ethnicGroup',
     'genderLabel',
     'itemLabel',
@@ -124,7 +122,29 @@ export default function GameScreen({ navigation, route }) {
     function yesPressHandler() {
         // Hanlde gameObject
         gameObjectHandler();
+        setQuestionNum((prev) => prev + 1);
+        setLastAnswer('yes');
 
+        if (key == 'age') {
+            setData((prevData) => {
+                let filteredData = prevData.filter((character) => {
+                    if (parseInt(character.age, 10) > parseInt(value, 10)) {
+                        return character;
+                    }
+                });
+                return filteredData;
+            });
+            return;
+        }
+
+        // Handle date 'yes' answer
+        if (key == 'dateOfDeath') {
+            setQueryAdds((prevAdds) => (prevAdds += 'wdt:P570 []; '));
+        } else {
+            getPidAndQid(updateKeyFormat(key), value, 'yes');
+        }
+
+        console.log(key, value);
         setData((prevData) => {
             try {
                 let filteredData = prevData.filter((item) => {
@@ -134,6 +154,7 @@ export default function GameScreen({ navigation, route }) {
                     let subs = item[key].split(', ');
                     for (let i = 0; i < subs.length; i++) {
                         if (subs.includes(value)) {
+                            //console.log(item.itemLabel + 'is ' + value);
                             return item;
                         }
                     }
@@ -146,12 +167,31 @@ export default function GameScreen({ navigation, route }) {
                 });
             }
         });
-        setQuestionNum((prev) => prev + 1);
-        setLastAnswer('yes');
-        getPidAndQid(updateKeyFormat(key), value, 'yes');
     }
 
     function noPressHandler() {
+        setQuestionNum((prev) => prev + 1);
+        setLastAnswer('no');
+
+        if (key == 'age') {
+            setData((prevData) => {
+                let filteredData = prevData.filter((character) => {
+                    if (parseInt(character.age, 10) <= parseInt(value, 10)) {
+                        return character;
+                    }
+                });
+                return filteredData;
+            });
+            return;
+        }
+
+        // Handle date of death 'yes' answer
+        if (key == 'dateOfDeath') {
+            setQueryNots((prevNots) => (prevNots += 'MINUS { ?item wdt:P570 [] }'));
+        } else {
+            getPidAndQid(updateKeyFormat(key), value, 'no');
+        }
+
         setData((prevData) => {
             try {
                 let filteredData = prevData.filter((item) => {
@@ -161,6 +201,7 @@ export default function GameScreen({ navigation, route }) {
                     let subs = item[key].split(', ');
                     for (let i = 0; i < subs.length; i++) {
                         if (!subs.includes(value)) {
+                            //console.log(item.itemLabel + 'is not ' + value);
                             return item;
                         }
                     }
@@ -173,12 +214,16 @@ export default function GameScreen({ navigation, route }) {
                 });
             }
         });
-        setQuestionNum((prev) => prev + 1);
-        setLastAnswer('no');
-        getPidAndQid(updateKeyFormat(key), value, 'no');
     }
 
     function dontKnowPressHandler() {
+        setQuestionNum((prev) => prev + 1);
+        setLastAnswer("don't know");
+        // Do nothing if the user dont have info about the characters age
+        if (key == 'age') {
+            return;
+        }
+
         setData((prevData) => {
             try {
                 for (let i = 0; i < prevData.length; i++) {
@@ -199,8 +244,6 @@ export default function GameScreen({ navigation, route }) {
                 });
             }
         });
-        setQuestionNum((prev) => prev + 1);
-        setLastAnswer("don't know");
     }
 
     async function getPidAndQid(propertyLabel, valueLabel, answer) {
@@ -217,10 +260,10 @@ export default function GameScreen({ navigation, route }) {
             const qid = valueData.search[0].id;
 
             if (answer == 'yes') {
-                setQueryAdds((prevQuerry) => prevQuerry + `wdt:${pid} wd:${qid}; `);
+                setQueryAdds((prevAdds) => prevAdds + `wdt:${pid} wd:${qid}; `);
             }
             if (answer == 'no') {
-                setQueryNots((prevQuerry) => prevQuerry + `MINUS {?item wdt:${pid} wd:${qid} } `);
+                setQueryNots((prevNots) => prevNots + `MINUS {?item wdt:${pid} wd:${qid} } `);
             }
         } catch (error) {
             console.log('invalid property or value: ' + propertyLabel + ': ' + valueLabel);
@@ -241,18 +284,6 @@ export default function GameScreen({ navigation, route }) {
             setData(dataFromFB);
             // For some reason if the function returns the data the array of objects will be
             // inside of another object, right now this is the way to fetch the data witout issues
-
-            // Generate global Keys
-            let res = [];
-            for (let i = 0; i < dataFromFB.length; i++) {
-                let objKeys = Object.keys(dataFromFB[i]);
-                objKeys.forEach((key) => {
-                    if (!res.includes(key)) {
-                        res.push(key);
-                    }
-                });
-            }
-            //await setGlobalKeys(res);
         } catch (error) {
             console.error(error);
         }
@@ -266,10 +297,24 @@ export default function GameScreen({ navigation, route }) {
         return str;
     }
 
+    function calculateAgeMedian(characters) {
+        // Extract ages from characters and sort in ascending order
+        const ages = characters.map((character) => parseInt(character.age, 10)).sort((a, b) => a - b);
+
+        // Calculate the median
+        const midIndex = Math.floor(ages.length / 2);
+        if (ages.length % 2 === 0) {
+            // Even number of ages
+            const median = (ages[midIndex - 1] + ages[midIndex]) / 2;
+            return median;
+        } else {
+            // Odd number of ages
+            return ages[midIndex];
+        }
+    }
+
     useEffect(() => {
-        //queryBuilder();
         fetchDataFromFirebase();
-        //setData(tempQuery);
     }, []);
 
     // Delete all instances of a certain character that the app guessed wrong on GuessScreen
@@ -297,11 +342,26 @@ export default function GameScreen({ navigation, route }) {
             // can't query yet!
         }
 
+        // Ask about the age at question number 4
+        if (questionNum == 4) {
+            const medianAge = calculateAgeMedian(data);
+            setKey('age');
+            setValue(medianAge.toString());
+            setQuestion("is your character's age is above " + medianAge + '?');
+            return;
+        }
+
         try {
             let [decidedKey, decidedValue] = decision();
             setKey(decidedKey);
             setValue(decidedValue);
-            setQuestion("is your character's " + (key ? updateKeyFormat(key) : '') + ' is ' + value + '?');
+            if (decidedKey == 'dateOfDeath' && decidedValue == '1') {
+                setQuestion('Is you character is dead?');
+            } else if (decidedKey == 'dateOfDeath' && decidedValue == '0') {
+                setQuestion('Is you character is Alive?');
+            } else {
+                setQuestion("Is your character's " + (key ? updateKeyFormat(key) : '') + ' is ' + value + '?');
+            }
         } catch (error) {
             // Catch block will run when data will be empty
             if (!isQueried) {
