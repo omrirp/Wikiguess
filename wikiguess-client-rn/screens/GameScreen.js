@@ -1,9 +1,10 @@
-import { View, StyleSheet, unstable_enableLogBox } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Avatar from '../components/game/Avatar';
 import Question from '../components/game/Question';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import PrimaryHeader from '../components/ui/PrimaryHeader';
 import GradientBackground from '../components/ui/GradientBackground';
 import SPARQLQueryDispatcher from '../utils/SPARQLQueryDispatcher';
 import { getAllCharacters } from '../utils/firebaseHandler';
@@ -48,8 +49,6 @@ export default function GameScreen({ navigation, route }) {
     const [isQueried, setIsQueried] = useState(false);
     // This object will contain the key/value pait of the questions that the user answers yes
     const [gameObject, setGameObject] = useState({});
-
-    const [globalKeys, setGlobalKeys] = useState([]);
 
     // Decide what unique value to use for renderind the question
     function decision() {
@@ -232,6 +231,7 @@ export default function GameScreen({ navigation, route }) {
         const queryDispatcher = new SPARQLQueryDispatcher(additions, minuses);
         queryDispatcher.query().then((results) => {
             setData(results);
+            setIsQueried(true);
         });
     }
 
@@ -288,17 +288,14 @@ export default function GameScreen({ navigation, route }) {
             return;
         }
         console.log(data.length);
-        // Use this to get all keys hardcoded
-        // let res = [];
-        // for (let i = 0; i < data.length; i++) {
-        //     let keys = Object.keys(data[i]);
-        //     keys.forEach((key) => {
-        //         if (!res.includes(key)) {
-        //             res.push(key);
-        //         }
-        //     });
-        // }
-        // console.log(res);
+
+        try {
+            if (questionNum > 8 && !isQueried) {
+                queryBuilder(queryAdds, queryNots);
+            }
+        } catch (error) {
+            // can't query yet!
+        }
 
         try {
             let [decidedKey, decidedValue] = decision();
@@ -308,11 +305,8 @@ export default function GameScreen({ navigation, route }) {
         } catch (error) {
             // Catch block will run when data will be empty
             if (!isQueried) {
-                //console.log(queryAdds);
-                //console.log(queryNots);
                 // Do not send the request for now...
-                //queryBuilder(queryAdds, queryNots);
-                setIsQueried(true);
+                queryBuilder(queryAdds, queryNots);
             } else {
                 navigation.navigate('GameOverScreen', {
                     result: 'incorrect',
@@ -323,6 +317,9 @@ export default function GameScreen({ navigation, route }) {
         }
     }, [data, key, value, questionNum]);
 
+    if (!data) {
+        return <PrimaryHeader>Loading...</PrimaryHeader>;
+    }
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>
