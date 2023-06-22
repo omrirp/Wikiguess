@@ -34,6 +34,7 @@ export default function GuessScreen({ route, navigation }) {
     }
 
     function guessHandler(name) {
+        setCharacterName(name);
         axios
             .get(
                 `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${name}`
@@ -51,7 +52,7 @@ export default function GuessScreen({ route, navigation }) {
                             style={styles.image}
                         />
                     );
-                    setCharacterName(name);
+                    //setCharacterName(name);
                 }
                 // data = res.data;
                 // console.log(data.query.pages);
@@ -74,7 +75,7 @@ export default function GuessScreen({ route, navigation }) {
                             onPress={() => {
                                 navigation.navigate('GameOverScreen', {
                                     result: 'correct',
-                                    character: route.params.name,
+                                    character: characterName,
                                     questionCount: route.params.questionCount,
                                     gameObject: route.params.gameObject,
                                 });
@@ -86,10 +87,15 @@ export default function GuessScreen({ route, navigation }) {
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={() => {
-                                const name = route.params.name;
+                                let nameToDelete;
+                                if (route.params.name) {
+                                    nameToDelete = route.params.name;
+                                } else {
+                                    nameToDelete = characterName;
+                                }
                                 delete route.params.name;
                                 navigation.navigate('GameScreen', {
-                                    toDelete: name,
+                                    toDelete: nameToDelete,
                                     gameObject: route.params.gameObject,
                                 });
                             }}

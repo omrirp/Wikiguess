@@ -14,7 +14,6 @@ const allKeys = [
     'countryOfCitizenship',
     'ethnicGroup',
     'genderLabel',
-    'itemLabel',
     'occupation',
     'residence',
     'dateOfDeath',
@@ -51,9 +50,17 @@ export default function GameScreen({ navigation, route }) {
     // Decide what unique value to use for renderind the question
     function decision() {
         if (questionNum == limit) {
-            setLimit((prevLimit) => prevLimit + 2);
+            setLimit((prevLimit) => prevLimit + 3);
+
             navigation.navigate('GuessScreen', {
                 name: data[0].itemLabel,
+                questionCount: questionNum,
+                gameObject: gameObject,
+            });
+        }
+
+        if (questionNum >= 12) {
+            navigation.navigate('GuessScreen', {
                 questionCount: questionNum,
                 gameObject: gameObject,
             });
@@ -144,7 +151,6 @@ export default function GameScreen({ navigation, route }) {
             getPidAndQid(updateKeyFormat(key), value, 'yes');
         }
 
-        console.log(key, value);
         setData((prevData) => {
             try {
                 let filteredData = prevData.filter((item) => {
@@ -273,6 +279,7 @@ export default function GameScreen({ navigation, route }) {
     function queryBuilder(additions = '', minuses = '') {
         const queryDispatcher = new SPARQLQueryDispatcher(additions, minuses);
         queryDispatcher.query().then((results) => {
+            console.log(results);
             setData(results);
             setIsQueried(true);
         });
@@ -321,7 +328,15 @@ export default function GameScreen({ navigation, route }) {
     // route.params.toDelete will contain the name of that character
     useEffect(() => {
         if (route.params) {
-            setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
+            console.log('to delete ' + route.params.toDelete);
+            try {
+                setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
+            } catch (error) {
+                navigation.navigate('GuessScreen', {
+                    questionCount: questionNum,
+                    gameObject: gameObject,
+                });
+            }
             delete route.params;
         }
         // Need to send SparQl querry here !!!
@@ -334,12 +349,13 @@ export default function GameScreen({ navigation, route }) {
         }
         console.log(data.length);
 
-        try {
-            if (questionNum > 8 && !isQueried) {
+        if (data.length <= 10 && !isQueried) {
+            setData(null);
+            try {
                 queryBuilder(queryAdds, queryNots);
+            } catch (error) {
+                console.log('runtime error');
             }
-        } catch (error) {
-            // can't query yet!
         }
 
         // Ask about the age at question number 4
@@ -378,8 +394,15 @@ export default function GameScreen({ navigation, route }) {
     }, [data, key, value, questionNum]);
 
     if (!data) {
-        return <PrimaryHeader>Loading...</PrimaryHeader>;
+        return (
+            <GradientBackground>
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <PrimaryHeader>Loading...</PrimaryHeader>
+                </View>
+            </GradientBackground>
+        );
     }
+
     return (
         <GradientBackground>
             <View style={styles.rootContainer}>

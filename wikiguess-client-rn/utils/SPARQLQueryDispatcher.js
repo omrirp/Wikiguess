@@ -1,13 +1,13 @@
 export default class SPARQLQueryDispatcher {
     constructor(additions = '', minuses = '') {
         this.endpoint = `SELECT ?item ?itemLabel ?genderLabel ?dateOfDeath ?age
-        (GROUP_CONCAT(DISTINCT ?occupationLabel; SEPARATOR=",") AS ?occupation) 
-        (GROUP_CONCAT(DISTINCT ?countryOfCitizenshipLabel; SEPARATOR=",") AS ?countryOfCitizenship) ?death ?articles ?dateOfBirth
-        (GROUP_CONCAT(DISTINCT ?residenceLabel; SEPARATOR=",") AS ?residence)
+        (GROUP_CONCAT(DISTINCT ?occupationLabel; SEPARATOR=", ") AS ?occupation) 
+        (GROUP_CONCAT(DISTINCT ?countryOfCitizenshipLabel; SEPARATOR=", ") AS ?countryOfCitizenship) ?death ?articles ?dateOfBirth
+        (GROUP_CONCAT(DISTINCT ?residenceLabel; SEPARATOR=", ") AS ?residence)
         (GROUP_CONCAT(DISTINCT ?ethnicGroupLabel; SEPARATOR=", ") AS ?ethnicGroup)
         
         # Politician exclusive
-        (GROUP_CONCAT(DISTINCT ?academinDegreeLabel; SEPARATOR=",") AS ?academinDegree)
+        (GROUP_CONCAT(DISTINCT ?academinDegreeLabel; SEPARATOR=", ") AS ?academinDegree)
         # Musicians exclusive
         (GROUP_CONCAT(DISTINCT ?genreLabel; SEPARATOR=", ") AS ?genre)
         (GROUP_CONCAT(DISTINCT ?fieldOfWorkLabel; SEPARATOR=", ") AS ?fieldOfWork)
@@ -88,16 +88,6 @@ export default class SPARQLQueryDispatcher {
                 }
                 return result;
             });
-
-        // Update dateOfDeath to 1 or 0
-        results = results.map((character) => {
-            if (character.dateOfDeath) {
-                character.dateOfDeath = '1';
-            } else {
-                character.dateOfDeath = '0';
-            }
-            return character;
-        });
         return results;
     }
 }
@@ -134,3 +124,13 @@ SERVICE wikibase:label {
 }
 } 
 ORDER BY DESC (?articles)`;
+
+// // Update dateOfDeath to 1 or 0
+// results = results.map((character) => {
+//     if (character.dateOfDeath) {
+//         character.dateOfDeath = '1';
+//     } else {
+//         character.dateOfDeath = '0';
+//     }
+//     return character;
+// });
