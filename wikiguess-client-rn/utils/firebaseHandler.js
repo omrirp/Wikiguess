@@ -34,7 +34,7 @@ export function getAllCharacters() {
                 const totalCharacters = dataArray.length;
                 const indices = new Set();
 
-                while (indices.size < 600) {
+                while (indices.size < 800) {
                     const randomIndex = Math.floor(Math.random() * totalCharacters);
                     indices.add(randomIndex);
                 }

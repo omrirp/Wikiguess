@@ -90,14 +90,18 @@ export default function GuessScreen({ route, navigation }) {
                                 let nameToDelete;
                                 if (route.params.name) {
                                     nameToDelete = route.params.name;
+                                    delete route.params.name;
+                                    navigation.navigate('GameScreen', {
+                                        toDelete: nameToDelete,
+                                        gameObject: route.params.gameObject,
+                                    });
                                 } else {
-                                    nameToDelete = characterName;
+                                    navigation.navigate('GameOverScreen', {
+                                        result: 'incorrect',
+                                        questionCount: route.params.questionCount,
+                                        gameObject: route.params.gameObject,
+                                    });
                                 }
-                                delete route.params.name;
-                                navigation.navigate('GameScreen', {
-                                    toDelete: nameToDelete,
-                                    gameObject: route.params.gameObject,
-                                });
                             }}
                         >
                             No <Ionicons name='sad-outline' size={20} />

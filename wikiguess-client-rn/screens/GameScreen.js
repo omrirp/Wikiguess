@@ -278,8 +278,9 @@ export default function GameScreen({ navigation, route }) {
 
     function queryBuilder(additions = '', minuses = '') {
         const queryDispatcher = new SPARQLQueryDispatcher(additions, minuses);
+        console.log(additions);
+        console.log(minuses);
         queryDispatcher.query().then((results) => {
-            console.log(results);
             setData(results);
             setIsQueried(true);
         });
@@ -349,7 +350,7 @@ export default function GameScreen({ navigation, route }) {
         }
         console.log(data.length);
 
-        if (data.length <= 10 && !isQueried) {
+        if (data.length <= 5 && !isQueried) {
             setData(null);
             try {
                 queryBuilder(queryAdds, queryNots);
