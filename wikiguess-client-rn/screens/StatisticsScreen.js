@@ -64,16 +64,20 @@ export default function StatisticsScreen() {
                         <View style={styles.statHeadersContainer}>
                             <View style={{ flex: 1, alignItems: 'center' }}>
                                 <Text style={[{ color: '#00649c' }, styles.statText]}>Corrects</Text>
-                                <Text style={[{ color: '#00649c' }, styles.statText]}>{correctsNum}%</Text>
+                                <Text style={[{ color: '#00649c' }, styles.statText]}>{correctsNum || ''}%</Text>
                             </View>
                             <View style={{ flex: 1, alignItems: 'center' }}>
                                 <Text style={[{ color: '#9a0000' }, styles.statText]}>Incorrects</Text>
-                                <Text style={[{ color: '#9a0000' }, styles.statText]}>{incorrectsNum}%</Text>
+                                <Text style={[{ color: '#9a0000' }, styles.statText]}>{incorrectsNum || ''}%</Text>
                             </View>
                         </View>
                         <View style={styles.barContainer}>
-                            <View style={[{ backgroundColor: '#00649c', flex: correctsNum }, styles.barItem]}></View>
-                            <View style={[{ backgroundColor: '#9a0000', flex: incorrectsNum }, styles.barItem]}></View>
+                            <View
+                                style={[{ backgroundColor: '#00649c', flex: correctsNum || 1 }, styles.barItem]}
+                            ></View>
+                            <View
+                                style={[{ backgroundColor: '#9a0000', flex: incorrectsNum || 0 }, styles.barItem]}
+                            ></View>
                         </View>
                     </StatContainer>
                 </View>

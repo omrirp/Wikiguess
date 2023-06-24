@@ -350,7 +350,7 @@ export default function GameScreen({ navigation, route }) {
         }
         console.log(data.length);
 
-        if (data.length <= 5 && !isQueried) {
+        if (data.length <= 3 && !isQueried) {
             setData(null);
             try {
                 queryBuilder(queryAdds, queryNots);
@@ -385,8 +385,7 @@ export default function GameScreen({ navigation, route }) {
                 // Do not send the request for now...
                 queryBuilder(queryAdds, queryNots);
             } else {
-                navigation.navigate('GameOverScreen', {
-                    result: 'incorrect',
+                navigation.navigate('GuessScreen', {
                     questionCount: questionNum,
                     gameObject: gameObject,
                 });
