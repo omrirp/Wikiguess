@@ -47,7 +47,7 @@ export default function GameOverScreen({ route, navigation }) {
                 const keys = Object.keys(res.data.query.pages);
                 //res.data.query.pages[keys[0]].title
                 if (!res.data.query.pages[keys[0]].original) {
-                    setSearchedCharacter(<Text style={styles.characterText}>{'Please Ceck your spelling...'}</Text>);
+                    setSearchedCharacter(<Text style={styles.characterText}>{'Please Check your spelling...'}</Text>);
                 } else {
                     let characterName = res.data.query.pages[keys[0]].title;
                     setSearchedCharacter(

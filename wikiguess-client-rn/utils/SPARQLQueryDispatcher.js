@@ -69,7 +69,7 @@ export default class SPARQLQueryDispatcher {
         } 
         GROUP BY ?item ?itemLabel ?genderLabel ?death ?articles ?dateOfBirth ?dateOfDeath  ?deathAge ?age 
         ORDER BY DESC (?articles)
-        LIMIT 600`;
+        LIMIT 1000`;
     }
 
     async query() {

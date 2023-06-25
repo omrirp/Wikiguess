@@ -23,6 +23,8 @@ const allKeys = [
     'hairColor',
 ];
 
+const finalQuestionNum = 20;
+
 export default function GameScreen({ navigation, route }) {
     // Question counter
     const [questionNum, setQuestionNum] = useState(1);
@@ -59,7 +61,7 @@ export default function GameScreen({ navigation, route }) {
             });
         }
 
-        if (questionNum >= 12) {
+        if (questionNum == finalQuestionNum || (isQueried && data.length == 0)) {
             navigation.navigate('GuessScreen', {
                 questionCount: questionNum,
                 gameObject: gameObject,
@@ -132,6 +134,10 @@ export default function GameScreen({ navigation, route }) {
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('yes');
 
+        if (!data) {
+            return;
+        }
+
         if (key == 'age') {
             setData((prevData) => {
                 let filteredData = prevData.filter((character) => {
@@ -179,6 +185,10 @@ export default function GameScreen({ navigation, route }) {
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
 
+        if (!data) {
+            return;
+        }
+
         if (key == 'age') {
             setData((prevData) => {
                 let filteredData = prevData.filter((character) => {
@@ -225,6 +235,11 @@ export default function GameScreen({ navigation, route }) {
     function dontKnowPressHandler() {
         setQuestionNum((prev) => prev + 1);
         setLastAnswer("don't know");
+
+        if (!data) {
+            return;
+        }
+
         // Do nothing if the user dont have info about the characters age
         if (key == 'age') {
             return;
@@ -278,8 +293,8 @@ export default function GameScreen({ navigation, route }) {
 
     function queryBuilder(additions = '', minuses = '') {
         const queryDispatcher = new SPARQLQueryDispatcher(additions, minuses);
-        console.log(additions);
-        console.log(minuses);
+        // console.log(additions);
+        // console.log(minuses);
         queryDispatcher.query().then((results) => {
             setData(results);
             setIsQueried(true);
@@ -306,8 +321,11 @@ export default function GameScreen({ navigation, route }) {
     }
 
     function calculateAgeMedian(characters) {
-        // Extract ages from characters and sort in ascending order
-        const ages = characters.map((character) => parseInt(character.age, 10)).sort((a, b) => a - b);
+        // Extract ages from liveing characters and sort in ascending order
+        const ages = characters
+            .filter((character) => character.dateOfDeath == '0')
+            .map((character) => parseInt(character.age, 10))
+            .sort((a, b) => a - b);
 
         // Calculate the median
         const midIndex = Math.floor(ages.length / 2);
@@ -329,7 +347,6 @@ export default function GameScreen({ navigation, route }) {
     // route.params.toDelete will contain the name of that character
     useEffect(() => {
         if (route.params) {
-            console.log('to delete ' + route.params.toDelete);
             try {
                 setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
             } catch (error) {
@@ -349,8 +366,9 @@ export default function GameScreen({ navigation, route }) {
             return;
         }
         console.log(data.length);
+        //console.log(data);
 
-        if (data.length <= 3 && !isQueried) {
+        if ((data.length <= 3 || questionNum == 11) && !isQueried) {
             setData(null);
             try {
                 queryBuilder(queryAdds, queryNots);

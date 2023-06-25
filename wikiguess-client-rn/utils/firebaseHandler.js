@@ -34,19 +34,19 @@ export function getAllCharacters() {
                 const totalCharacters = dataArray.length;
                 const indices = new Set();
 
-                while (indices.size < 800) {
-                    const randomIndex = Math.floor(Math.random() * totalCharacters);
-                    indices.add(randomIndex);
-                }
+                // while (indices.size < 800) {
+                //     const randomIndex = Math.floor(Math.random() * totalCharacters);
+                //     indices.add(randomIndex);
+                // }
 
-                Array.from(indices).forEach((index) => {
-                    randomCharacters.push(dataArray[index]);
-                });
+                // Array.from(indices).forEach((index) => {
+                //     randomCharacters.push(dataArray[index]);
+                // });
 
-                // Sort the selected characters in descending order by the 'articles' property
-                randomCharacters.sort((a, b) => parseInt(b.articles, 10) - parseInt(a.articles, 10));
+                // // Sort the selected characters in descending order by the 'articles' property
+                // randomCharacters.sort((a, b) => parseInt(b.articles, 10) - parseInt(a.articles, 10));
 
-                resolve(randomCharacters);
+                resolve(dataArray);
             } else {
                 reject(new Error('No data available'));
             }
