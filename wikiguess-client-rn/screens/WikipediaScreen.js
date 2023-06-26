@@ -17,18 +17,24 @@ export default function WikipediaScreen() {
         setInputText(enteredText);
     }
 
+    function capitalizeWords(str) {
+        return str.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+        });
+    }
+
     function onSearchPress() {
         axios
             .get(
-                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${inputText}`
+                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${capitalizeWords(
+                    inputText
+                )}`
             )
             .then((res) => {
                 const keys = Object.keys(res.data.query.pages);
                 setHeader(res.data.query.pages[keys[0]].title);
                 if (!res.data.query.pages[keys[0]].original) {
-                    setContent(
-                        'Could not find a Wikipedia article. Please try inserting full name or check misspells.'
-                    );
+                    setContent('Could not find a Wikipedia article. Please try inserting full name or check misspells.');
                     setImage('');
                 } else {
                     setContent(res.data.query.pages[keys[0]].extract);

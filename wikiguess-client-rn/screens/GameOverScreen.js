@@ -23,6 +23,12 @@ export default function GameOverScreen({ route, navigation }) {
     // could not guess correctly the user's character
     var gameObject = route.params.gameObject;
 
+    function capitalizeWords(str) {
+        return str.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+        });
+    }
+
     function endGamePressHandler() {
         const stat = {
             UserEmail: userEmail,
@@ -41,7 +47,9 @@ export default function GameOverScreen({ route, navigation }) {
         setSearchedCharacter('');
         axios
             .get(
-                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${inputText}`
+                `https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts|pageimages&exintro&explaintext&piprop=original&redirects=1&titles=${capitalizeWords(
+                    inputText
+                )}`
             )
             .then((res) => {
                 const keys = Object.keys(res.data.query.pages);

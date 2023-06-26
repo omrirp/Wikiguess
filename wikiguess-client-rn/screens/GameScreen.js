@@ -323,7 +323,7 @@ export default function GameScreen({ navigation, route }) {
     function calculateAgeMedian(characters) {
         // Extract ages from liveing characters and sort in ascending order
         const ages = characters
-            .filter((character) => character.dateOfDeath == '0')
+            .filter((character) => character.dateOfDeath == '0' || '1')
             .map((character) => parseInt(character.age, 10))
             .sort((a, b) => a - b);
 
@@ -357,7 +357,6 @@ export default function GameScreen({ navigation, route }) {
             }
             delete route.params;
         }
-        // Need to send SparQl querry here !!!
     }, [route]);
 
     useEffect(() => {
@@ -368,11 +367,14 @@ export default function GameScreen({ navigation, route }) {
         console.log(data.length);
         //console.log(data);
 
-        if ((data.length <= 3 || questionNum == 11) && !isQueried) {
+        if ((data.length == 1 || questionNum == 13) && !isQueried) {
+            const prevData = data;
             setData(null);
             try {
+                console.log('Running SpqrQL query');
                 queryBuilder(queryAdds, queryNots);
             } catch (error) {
+                setData(prevData);
                 console.log('runtime error');
             }
         }
@@ -401,6 +403,7 @@ export default function GameScreen({ navigation, route }) {
             // Catch block will run when data will be empty
             if (!isQueried) {
                 // Do not send the request for now...
+                console.log('Running SpqrQL query');
                 queryBuilder(queryAdds, queryNots);
             } else {
                 navigation.navigate('GuessScreen', {
