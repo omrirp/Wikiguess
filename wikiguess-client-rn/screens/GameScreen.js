@@ -140,12 +140,14 @@ export default function GameScreen({ navigation, route }) {
 
         if (key == 'age') {
             setData((prevData) => {
-                let filteredData = prevData.filter((character) => {
-                    if (parseInt(character.age, 10) > parseInt(value, 10)) {
-                        return character;
-                    }
-                });
-                return filteredData;
+                try {
+                    let filteredData = prevData.filter((character) => {
+                        if (parseInt(character.age, 10) > parseInt(value, 10)) {
+                            return character;
+                        }
+                    });
+                    return filteredData;
+                } catch (error) {}
             });
             return;
         }
@@ -185,18 +187,38 @@ export default function GameScreen({ navigation, route }) {
         setQuestionNum((prev) => prev + 1);
         setLastAnswer('no');
 
+        if (key == 'genderLabel') {
+            let gender;
+            if (value == 'male') {
+                gender = 'female';
+            } else {
+                gender = 'male';
+            }
+            setGameObject((prevGameObject) => {
+                let ketStr = updateKeyFormat(key);
+                if (!prevGameObject[ketStr]) {
+                    prevGameObject[ketStr] = gender;
+                } else {
+                    prevGameObject[ketStr] += ', ' + gender;
+                }
+                return prevGameObject;
+            });
+        }
+
         if (!data) {
             return;
         }
 
         if (key == 'age') {
             setData((prevData) => {
-                let filteredData = prevData.filter((character) => {
-                    if (parseInt(character.age, 10) <= parseInt(value, 10)) {
-                        return character;
-                    }
-                });
-                return filteredData;
+                try {
+                    let filteredData = prevData.filter((character) => {
+                        if (parseInt(character.age, 10) <= parseInt(value, 10)) {
+                            return character;
+                        }
+                    });
+                    return filteredData;
+                } catch (error) {}
             });
             return;
         }
@@ -348,7 +370,9 @@ export default function GameScreen({ navigation, route }) {
     useEffect(() => {
         if (route.params) {
             try {
-                setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
+                if (data) {
+                    setData((prevData) => prevData.filter((item) => item.itemLabel != route.params.toDelete));
+                }
             } catch (error) {
                 navigation.navigate('GuessScreen', {
                     questionCount: questionNum,
