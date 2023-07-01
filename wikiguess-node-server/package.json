@@ -1,0 +1,25 @@
+{
+    "name": "wikiguess-node-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/omrirp/WikiGuess-node-server.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/omrirp/WikiGuess-node-server/issues"
+    },
+    "homepage": "https://github.com/omrirp/WikiGuess-node-server#readme",
+    "dependencies": {
+        "express": "^4.18.2",
+        "firebase": "^9.22.2"
+    }
+}
