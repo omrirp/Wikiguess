@@ -72,25 +72,16 @@ export default function StatisticsScreen() {
                             </View>
                         </View>
                         <View style={styles.barContainer}>
-                            <View
-                                style={[{ backgroundColor: '#00649c', flex: correctsNum || 1 }, styles.barItem]}
-                            ></View>
-                            <View
-                                style={[{ backgroundColor: '#9a0000', flex: incorrectsNum || 0 }, styles.barItem]}
-                            ></View>
+                            <View style={[{ backgroundColor: '#00649c', flex: correctsNum || 1 }, styles.barItem]}></View>
+                            <View style={[{ backgroundColor: '#9a0000', flex: incorrectsNum || 0 }, styles.barItem]}></View>
                         </View>
                     </StatContainer>
                 </View>
-                <Text style={styles.otherStatsHeader}>Top 10 characters stats</Text>
+                <Text style={styles.otherStatsHeader}>Top 10 Global characters stats</Text>
                 <FlatList
                     data={globStats}
                     renderItem={(itemData) => {
-                        return (
-                            <GlobStatItem
-                                character={itemData.item.character}
-                                avgQuestionCount={itemData.item.avgQuestionCount}
-                            />
-                        );
+                        return <GlobStatItem character={itemData.item.character} avgQuestionCount={itemData.item.avgQuestionCount} />;
                     }}
                     keyExtractor={(item, key) => item.character}
                 />
