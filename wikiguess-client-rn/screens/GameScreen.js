@@ -442,7 +442,7 @@ export default function GameScreen({ navigation, route }) {
         return (
             <GradientBackground>
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                    <PrimaryHeader>Fetchin Data from Wikipedia, this ight take some time...</PrimaryHeader>
+                    <PrimaryHeader>Fetchin Data from Wikipedia, this might take some time...</PrimaryHeader>
                 </View>
             </GradientBackground>
         );
